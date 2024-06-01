@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -72,7 +72,7 @@
         }
         if (!headerRow.querySelector('.elementOrder-header')) {
             let elementOrderHeader = document.createElement('th');
-            elementOrderHeader.textContent = 'elementOrder';
+            elementOrderHeader.textContent = 'el.Order';
             elementOrderHeader.className = 'elementOrder-header';
             headerRow.appendChild(elementOrderHeader);
         }
