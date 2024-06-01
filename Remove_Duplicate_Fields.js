@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.5
+// @version      1.0.6
 // @description  определяет кол-во дубликатов динполей и позволяет их удалить, оставляя при этом самую НОВУЮ версию динполя.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -54,18 +54,15 @@
                 }
             }
 
-            // Создаем элемент span для числа
             let countSpan = document.createElement('span');
             countSpan.textContent = duplicateCount;
 
-            // Меняем цвет числа
             if (duplicateCount === 0) {
                 countSpan.style.color = 'green';
             } else {
                 countSpan.style.color = 'red';
             }
 
-            // Добавляем число к тексту
             duplicateCountLabel.textContent = 'Найдено дубликатов динполей: ';
             duplicateCountLabel.appendChild(countSpan);
         }
