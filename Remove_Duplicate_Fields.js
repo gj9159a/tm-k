@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  try to take over the world!
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -16,7 +16,7 @@
 
     setTimeout(function() {
         let button = document.createElement('button');
-        button.textContent = 'Удалить дубликаты динполей2';
+        button.textContent = 'Удалить дубликаты динполей';
         button.style.position = 'absolute';
         button.style.right = '10%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(button);
