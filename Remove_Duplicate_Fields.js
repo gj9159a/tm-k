@@ -16,7 +16,7 @@
 
     setTimeout(function() {
         let button = document.createElement('button');
-        button.textContent = 'Удалить дубликаты динполей';
+        button.textContent = 'Удалить дубликаты динполей2';
         button.style.position = 'absolute';
         button.style.right = '10%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(button);
@@ -151,5 +151,5 @@
             }
             console.info('JS has completed its work. Total requests:', requestCount);
         }
-    }, 1000);
+    }, 2000);
 })();
