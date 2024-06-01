@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
-// @description  try to take over the world!
+// @version      1.0.2
+// @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=klientiks.ru
