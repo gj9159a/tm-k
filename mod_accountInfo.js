@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         mod_accountInfo
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  делает табличку фин.Инфо более наглядной.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountInfo/a/*
@@ -33,24 +33,26 @@
                 for (var k = 0; k < cells.length; k++) {
                     cells[k].style.border = "1px solid #ccc";
 
-                    if (i === 0 && k === 9 && cells[k].innerText == '1') {
-                        cells[k].style.backgroundColor = 'LightGreen';
-                        cells[10].innerText = cells[18].innerText;
-                        cells[10].style.backgroundColor = 'LightGreen';
-                    }
+                    if (i === 0) {
+                        if (k === 9 && cells[k].innerText == '1') {
+                            cells[k].style.backgroundColor = 'LightGreen';
+                            cells[10].innerText = cells[18].innerText;
+                            cells[10].style.backgroundColor = 'LightGreen';
+                        }
 
-                    if (k === 9 && cells[k].innerText == '1') {
-                        var activeTillCell = cells[6];
-                        var activeTillDate = new Date(activeTillCell.innerText);
-                        var currentDate = new Date();
-                        var diff = activeTillDate - currentDate;
+                        if (k === 9 && cells[k].innerText == '1') {
+                            var activeTillCell = cells[6];
+                            var activeTillDate = new Date(activeTillCell.innerText);
+                            var currentDate = new Date();
+                            var diff = activeTillDate - currentDate;
 
-                        if (diff < 3 * 24 * 60 * 60 * 1000) {
-                            activeTillCell.style.backgroundColor = 'IndianRed';
-                        } else if (diff < 7 * 24 * 60 * 60 * 1000) {
-                            activeTillCell.style.backgroundColor = 'Gold';
-                        } else {
-                            activeTillCell.style.backgroundColor = 'LightGreen';
+                            if (diff < 3 * 24 * 60 * 60 * 1000) {
+                                activeTillCell.style.backgroundColor = 'IndianRed';
+                            } else if (diff < 7 * 24 * 60 * 60 * 1000) {
+                                activeTillCell.style.backgroundColor = 'Gold';
+                            } else {
+                                activeTillCell.style.backgroundColor = 'LightGreen';
+                            }
                         }
                     }
                 }
