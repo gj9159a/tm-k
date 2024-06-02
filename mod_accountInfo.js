@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         mod_accountInfo
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  делает табличку фин.Инфо более наглядной.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountInfo/a/*
@@ -45,9 +45,9 @@
                         var currentDate = new Date();
                         var diff = activeTillDate - currentDate;
 
-                        if (diff < 120 * 24 * 60 * 60 * 1000) {
+                        if (diff < 3 * 24 * 60 * 60 * 1000) {
                             activeTillCell.style.backgroundColor = 'IndianRed';
-                        } else if (diff < 365 * 24 * 60 * 60 * 1000) {
+                        } else if (diff < 7 * 24 * 60 * 60 * 1000) {
                             activeTillCell.style.backgroundColor = 'Gold';
                         } else {
                             activeTillCell.style.backgroundColor = 'LightGreen';
