@@ -36,10 +36,10 @@
             let duplicates = {};
 
             elements.forEach(el => {
-                let field_name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
+                let name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
                 let model = el.querySelector(".p-admin-table_cell:nth-child(3)").textContent;
-                let scenario = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
-                let key = `${field_name}-${model}-${scenario}`;
+                let account = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
+                let key = `${name}-${model}-${account}`;
 
                 if (!duplicates[key]) {
                     duplicates[key] = [];
@@ -78,10 +78,10 @@
             let duplicates = {};
 
             elements.forEach(el => {
-                let field_name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
+                let name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
                 let model = el.querySelector(".p-admin-table_cell:nth-child(3)").textContent;
-                let scenario = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
-                let key = `${field_name}-${model}-${scenario}`;
+                let account = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
+                let key = `${name}-${model}-${account}`;
 
                 if (!duplicates[key]) {
                     duplicates[key] = [];
@@ -97,8 +97,6 @@
                     duplicates[key].forEach(el => {
                         items.push({
                             id: el.dataset.id,
-                            field_number: 0,
-                            field_name: el.querySelector(".p-admin-table_cell:nth-child(2)").textContent
                         });
                     });
                 }
