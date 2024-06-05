@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.6
+// @version      1.0.7
 // @description  определяет кол-во дубликатов динполей и позволяет их удалить, оставляя при этом самую НОВУЮ версию динполя.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
+// @match        https://klientiks.ru/clientix/admin/dynamicFields
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=klientiks.ru
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/gj9159a/tm-k/main/Remove_Duplicate_Fields.js
@@ -32,7 +33,7 @@
         updateDuplicateCount();
 
         function updateDuplicateCount() {
-            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement.processed"));
+            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement:not([Remove_Duplicate_Fields='true'])"));
             let duplicates = {};
 
             elements.forEach(el => {
@@ -45,6 +46,7 @@
                     duplicates[key] = [];
                 }
                 duplicates[key].push(el);
+                el.setAttribute('Remove_Duplicate_Fields', 'true');
             });
 
             let duplicateCount = 0;
@@ -74,7 +76,7 @@
             button.style.backgroundColor = 'yellow';
             button.style.color = 'black';
 
-            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement.processed"));
+            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement:not([Remove_Duplicate_Fields='true'])"));
             let duplicates = {};
 
             elements.forEach(el => {
@@ -87,6 +89,7 @@
                     duplicates[key] = [];
                 }
                 duplicates[key].push(el);
+                el.setAttribute('Remove_Duplicate_Fields', 'true');
             });
 
             let items = [];
