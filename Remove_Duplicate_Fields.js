@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.8
+// @version      1.0.9
 // @description  определяет кол-во дубликатов динполей и позволяет их удалить, оставляя при этом самую НОВУЮ версию динполя.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -41,6 +41,12 @@
         updateDuplicateCount();
 
         function updateDuplicateCount() {
+
+            let allElements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement"));
+            allElements.forEach(el => {
+                el.removeAttribute('Remove_Duplicate_Fields');
+            });
+
             let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement:not([Remove_Duplicate_Fields='true'])"));
             let duplicates = {};
 
@@ -86,7 +92,7 @@
             button.style.backgroundColor = 'yellow';
             button.style.color = 'black';
 
-            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement:not([Remove_Duplicate_Fields='true'])"));
+            let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement[Remove_Duplicate_Fields='true']"));
             let duplicates = {};
 
             elements.forEach(el => {
