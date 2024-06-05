@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         word_editDF
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  редактирует все поля word...word9 в зоне видимости под МКБ-10
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -19,7 +19,7 @@
     setTimeout(function() {
         console.info('Creating button...');
         let button = document.createElement('button');
-        button.textContent = 'Обработать поля';
+        button.textContent = 'Обработать все word...word9 под МКБ-10';
         button.style.position = 'absolute';
         button.style.right = '10%';
         button.style.top = '6%';
@@ -80,7 +80,7 @@
             }
 
             console.info('Updating field count label...');
-            fieldCountLabel.textContent = 'Найдено полей: ';
+            fieldCountLabel.textContent = 'Найдено полей word...word9: ';
             fieldCountLabel.appendChild(countSpan);
             console.info('Field count label updated.');
         }
@@ -140,7 +140,7 @@
 
             setTimeout(() => {
                 console.info('Resetting button...');
-                button.textContent = 'Обработать поля';
+                button.textContent = 'Обработать все word...word9 под МКБ-10';
                 button.style.backgroundColor = '';
                 button.style.color = '';
                 console.info('Button reset.');
