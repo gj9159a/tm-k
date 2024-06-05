@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         word_editDF
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  редактирует все поля word...word9 в зоне видимости под МКБ-10
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
