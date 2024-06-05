@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         word_editDF
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  редактирует все поля word...word9 в зоне видимости под МКБ-10
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -21,7 +21,7 @@
         let button = document.createElement('button');
         button.textContent = 'Обработать все word...word9 под МКБ-10';
         button.style.position = 'absolute';
-        button.style.right = '10%';
+        button.style.right = '5%';
         button.style.top = '6%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(button);
         console.info('Button created.');
