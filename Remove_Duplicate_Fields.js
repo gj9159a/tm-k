@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.9
+// @version      1.0.10
 // @description  определяет кол-во дубликатов динполей и позволяет их удалить, оставляя при этом самую НОВУЮ версию динполя.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
