@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         word_editDF
 // @namespace    http://tampermonkey.net/
-// @version      1.0.4
+// @version      1.0.5
 // @description  редактирует все поля word...word9 в зоне видимости под МКБ-10
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -15,41 +15,30 @@
 
 (function() {
     'use strict';
-    console.info('Starting script...');
 
     setTimeout(function() {
-        console.info('Creating button...');
         let button = document.createElement('button');
         button.textContent = 'Обработать все word...word9 под МКБ-10';
         button.style.position = 'absolute';
         button.style.right = '5%';
         button.style.top = '6%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(button);
-        console.info('Button created.');
 
-        console.info('Creating field count label...');
         let fieldCountLabel = document.createElement('span');
         fieldCountLabel.style.position = 'absolute';
         fieldCountLabel.style.right = '25%';
         fieldCountLabel.style.top = '6%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(fieldCountLabel);
-        console.info('Field count label created.');
 
-        console.info('Creating mutation observer...');
         let observer = new MutationObserver(updateFieldCount);
         observer.observe(document.querySelector("#viewDynamicFields"), { childList: true, subtree: true });
-        console.info('Mutation observer created.');
 
-        console.info('Updating field count...');
         updateFieldCount();
-        console.info('Field count updated.');
 
         function updateFieldCount() {
-            console.info('Getting elements...');
             let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement"));
             let fields = {};
 
-            console.info('Processing elements...');
             elements.forEach(el => {
                 let field_name = el.children[0].textContent;
                 let model = el.children[2].textContent;
@@ -64,13 +53,11 @@
                 }
             });
 
-            console.info('Counting fields...');
             let fieldCount = 0;
             for (let key in fields) {
                 fieldCount += fields[key].length;
             }
 
-            console.info('Creating count span...');
             let countSpan = document.createElement('span');
             countSpan.textContent = fieldCount;
 
@@ -80,27 +67,20 @@
                 countSpan.style.color = 'red';
             }
 
-            console.info('Updating field count label...');
             fieldCountLabel.textContent = 'Найдено полей word...word9: ';
             fieldCountLabel.appendChild(countSpan);
-            console.info('Field count label updated.');
         }
 
-        console.info('Adding event listener to button...');
         button.addEventListener('click', async (event) => {
             event.preventDefault();
 
-            console.info('Button clicked. Updating button...');
             button.textContent = 'Обрабатываю поля...';
             button.style.backgroundColor = 'yellow';
             button.style.color = 'black';
-            console.info('Button updated.');
 
-            console.info('Getting elements...');
             let elements = Array.from(document.querySelectorAll("#viewDynamicFields .BModelSearchListElement"));
             let fields = {};
 
-            console.info('Processing elements...');
             elements.forEach(el => {
                 let field_name = el.children[0].textContent;
                 let model = el.children[2].textContent;
@@ -115,7 +95,6 @@
                 }
             });
 
-            console.info('Creating items...');
             let items = [];
             for (let key in fields) {
                 fields[key].forEach(el => {
@@ -130,26 +109,20 @@
                 });
             }
 
-            console.info('Processing items...');
             await itemProcessing(items);
-            console.info('Items processed.');
 
-            console.info('Updating button...');
             button.textContent = 'Поля обработаны!';
             button.style.backgroundColor = 'green';
             button.style.color = 'white';
 
             setTimeout(() => {
-                console.info('Resetting button...');
                 button.textContent = 'Обработать все word...word9 под МКБ-10';
                 button.style.backgroundColor = '';
                 button.style.color = '';
-                console.info('Button reset.');
             }, 5000);
         });
 
         async function itemProcessing(items) {
-            console.info('Starting item processing...');
             let requestCount = 0;
             for (let i = 0; i < items.length; i++) {
                 let currentItem = items[i];
@@ -164,7 +137,6 @@
                     }
                 };
                 try {
-                    console.info('Sending request...');
                     let response = await fetch('https://klientiks.ru/clientix/admin/dynamicfields', {
                         method: 'POST',
                         headers: {
@@ -179,7 +151,6 @@
                     let result = await response.json();
                     console.table(result);
                     requestCount++;
-                    console.info('Request sent.');
                 } catch (error) {
                     console.info('Error:', error);
                 }
