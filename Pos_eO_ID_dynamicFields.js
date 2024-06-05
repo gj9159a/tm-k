@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.5
+// @version      1.0.6
 // @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -30,7 +30,7 @@
                 if (!row) {
                     continue;
                 }
-                if (!row.classList.contains('processed')) {
+                if (!row.hasAttribute('Pos_eO_ID_dynamicFields')) {
                     let positionTd = document.createElement('td');
                     positionTd.textContent = item.position;
 
@@ -48,7 +48,7 @@
                     referenceTd.parentNode.insertBefore(elementOrderTd, positionTd.nextSibling);
                     referenceTd.parentNode.insertBefore(idTd, elementOrderTd.nextSibling);
 
-                    row.classList.add('processed');
+                    row.setAttribute('Pos_eO_ID_dynamicFields', 'true');
                 }
             }
         }
