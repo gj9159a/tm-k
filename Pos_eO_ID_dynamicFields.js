@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.8
+// @version      1.0.9
 // @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
 // @match        https://klientiks.ru/clientix/admin/dynamicFields
+// @match        https://klientiks.ru/clientix/admin/DynamicFields
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=klientiks.ru
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/gj9159a/tm-k/main/Pos_eO_ID_dynamicFields.js
