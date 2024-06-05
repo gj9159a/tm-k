@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         Remove_Duplicate_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  определяет кол-во дубликатов справочников и позволяет их удалить, оставляя при этом самую НОВУЮ версию.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
+// @match        https://klientiks.ru/clientix/admin/paramDirectory
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=klientiks.ru
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/gj9159a/tm-k/main/Remove_Duplicate_paramDirectory.js
