@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_Fields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.7
+// @version      1.0.8
 // @description  определяет кол-во дубликатов динполей и позволяет их удалить, оставляя при этом самую НОВУЮ версию динполя.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -15,7 +15,9 @@
 (function() {
     'use strict';
 
-    setTimeout(function() {
+    setTimeout(() => {
+        let scheduled = false;
+
         let button = document.createElement('button');
         button.textContent = 'Удалить дубликаты динполей';
         button.style.position = 'absolute';
@@ -27,7 +29,13 @@
         duplicateCountLabel.style.right = '25%';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(duplicateCountLabel);
 
-        let observer = new MutationObserver(updateDuplicateCount);
+        let observer = new MutationObserver(() => {
+            if (!scheduled) {
+                scheduled = true;
+                requestAnimationFrame(updateDuplicateCount);
+            }
+        });
+
         observer.observe(document.querySelector("#viewDynamicFields"), { childList: true, subtree: true });
 
         updateDuplicateCount();
@@ -67,6 +75,8 @@
 
             duplicateCountLabel.textContent = 'Найдено дубликатов динполей: ';
             duplicateCountLabel.appendChild(countSpan);
+
+            scheduled = false;
         }
 
         button.addEventListener('click', async (event) => {
