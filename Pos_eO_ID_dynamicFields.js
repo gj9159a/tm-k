@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.6
+// @version      1.0.7
 // @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -14,6 +14,8 @@
 
 (function() {
     'use strict';
+
+    let scheduled = false;
 
     let checkAndModifyDOM = function() {
         let allListItems = $W.viewDynamicFields.allListItems;
@@ -83,9 +85,16 @@
             idHeader.className = 'id-header';
             headerRow.appendChild(idHeader);
         }
+
+        scheduled = false;
     };
 
-    const observer = new MutationObserver(checkAndModifyDOM);
+    const observer = new MutationObserver(() => {
+        if (!scheduled) {
+            scheduled = true;
+            requestAnimationFrame(checkAndModifyDOM);
+        }
+    });
 
     observer.observe(document, { childList: true, subtree: true });
 })();
