@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      0.0.1
+// @version      1.0.0
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, а также в карточку клиента и сотрудника
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
