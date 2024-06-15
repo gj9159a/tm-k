@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ID_templateList
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Показывает ID доков в разделе Возможности
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/settings/features*
@@ -16,11 +16,9 @@
 
     let checkAndModifyDOM = function() {
         let rows = document.querySelectorAll('.p-settings-documentList_row.jsElement_listItem.BModelSearchListElement');
-        console.info('Number of rows: ', rows.length);
         rows.forEach(row => {
             if (!row.classList.contains('processed')) {
                 let dataRowId = row.getAttribute('data-id');
-                console.info('dataRowId: ', dataRowId);
                 let td = document.createElement('div');
                 td.className = 'p-settings-documentList_cell';
                 let tdContent = document.createElement('div');
