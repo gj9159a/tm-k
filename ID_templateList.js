@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ID_templateList
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Показывает ID доков в разделе Возможности
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/settings/features*
@@ -34,28 +34,30 @@
         });
 
         let table = document.querySelector('.p-settings-documentList_table.jsTable.forLoadNexPageElements');
-        let thead = table.querySelector('.p-settings-documentList_head');
-        if (!thead.querySelector('.id-header')) {
-            let emptyHeader = document.createElement('div');
-            emptyHeader.className = 'p-settings-documentList_cell';
-            let emptyHeaderContent = document.createElement('div');
-            emptyHeaderContent.className = 'p-settings-documentList_ct';
-            let emptyHeaderText = document.createElement('div');
-            emptyHeaderText.className = 'p-settings-documentList_text';
-            emptyHeaderContent.appendChild(emptyHeaderText);
-            emptyHeader.appendChild(emptyHeaderContent);
-            thead.appendChild(emptyHeader);
+        if (table) {
+            let thead = table.querySelector('.p-settings-documentList_head');
+            if (thead && !thead.querySelector('.id-header')) {
+                let emptyHeader = document.createElement('div');
+                emptyHeader.className = 'p-settings-documentList_cell';
+                let emptyHeaderContent = document.createElement('div');
+                emptyHeaderContent.className = 'p-settings-documentList_ct';
+                let emptyHeaderText = document.createElement('div');
+                emptyHeaderText.className = 'p-settings-documentList_text';
+                emptyHeaderContent.appendChild(emptyHeaderText);
+                emptyHeader.appendChild(emptyHeaderContent);
+                thead.appendChild(emptyHeader);
 
-            let newHeader = document.createElement('div');
-            newHeader.className = 'p-settings-documentList_cell id-header';
-            let newHeaderContent = document.createElement('div');
-            newHeaderContent.className = 'p-settings-documentList_ct';
-            let newHeaderText = document.createElement('div');
-            newHeaderText.className = 'p-settings-documentList_text';
-            newHeaderText.textContent = 'ID';
-            newHeaderContent.appendChild(newHeaderText);
-            newHeader.appendChild(newHeaderContent);
-            thead.appendChild(newHeader);
+                let newHeader = document.createElement('div');
+                newHeader.className = 'p-settings-documentList_cell id-header';
+                let newHeaderContent = document.createElement('div');
+                newHeaderContent.className = 'p-settings-documentList_ct';
+                let newHeaderText = document.createElement('div');
+                newHeaderText.className = 'p-settings-documentList_text';
+                newHeaderText.textContent = 'ID';
+                newHeaderContent.appendChild(newHeaderText);
+                newHeader.appendChild(newHeaderContent);
+                thead.appendChild(newHeader);
+            }
         }
     };
 
