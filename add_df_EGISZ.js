@@ -2,7 +2,7 @@
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
 // @version      1.1.0
-// @description  добавляет динполя ЕГИСЗ в указанные протоколы, а также в карточку клиента и сотрудника
+// @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
 // @match        https://klientiks.ru/clientix/admin/dynamicFields
