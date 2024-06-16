@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Pos_eO_ID_dynamicFields
 // @namespace    http://tampermonkey.net/
-// @version      1.0.10
+// @version      1.0.11
 // @description  показывает позицию, эл.ордер и ID всех динполей в админке динполей
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -86,14 +86,20 @@
         }
 
         let targetTable = document.querySelector("#viewDynamicFields > div > table");
-        if (targetTable) {
-            targetTable.style.tableLayout = "fixed";
-            let cells = targetTable.querySelectorAll("td");
-            cells.forEach(cell => {
-                cell.style.maxWidth = "400px";
-                cell.style.wordBreak = "break-all";
-            });
-        }
+if (targetTable) {
+    targetTable.style.tableLayout = "fixed";
+    let rows = targetTable.querySelectorAll("tr");
+    rows.forEach((row, index) => {
+        let cells = row.querySelectorAll("td");
+        cells.forEach(cell => {
+            cell.style.maxWidth = "400px";
+            cell.style.wordBreak = "break-all";
+            if (index % 2 !== 0) {
+                cell.style.backgroundColor = "#fafafa";
+            }
+        });
+    });
+}
     };
 
     const observer = new MutationObserver(checkAndModifyDOM);
