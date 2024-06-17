@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         mod_accountInfo
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  делает табличку фин.Инфо более наглядной.
 // @author       gj9159a
-// @match        https://klientiks.ru/clientix/admin/accountInfo/a/*
+// @match        https://klientiks.ru/clientix/admin/accountInfo*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=klientiks.ru
 // @grant        none
 // @updateURL    https://raw.githubusercontent.com/gj9159a/tm-k/main/mod_accountInfo.js
