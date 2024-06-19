@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.1.1
+// @version      1.1.2
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -657,11 +657,11 @@
                         {name: 'status_egisz', label: 'статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
                         {name: 'last_status_egisz', label: 'последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                         {name: 'send_egisz', label: 'чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.14","elementOrder":1,"elementClass":"_block"}', position: '0.14'},
-                        {name: 'id_case_result', label: 'Результат осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.15","elementOrder":1,"defaultValue":"Без перемен","readonly":true}', position: '0.15'},
+                        {name: 'id_case_result', label: 'Результат осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.15","elementOrder":1,"defaultValue":"Без изменения","readonly":true}', position: '0.15'},
                         {name: 'id_visit_purpose', label: 'Цель визита', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.16","elementOrder":1,"defaultValue":"Лечебно-диагностическая","readonly":true}', position: '0.16'},
                         {name: 'case_visit_type', label: 'Первичность', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.17","elementOrder":1,"defaultValue":"Первичный","readonly":true}', position: '0.17'},
                         {name: 'admission_condition', label: 'Состояние пациента', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.18","elementOrder":1,"defaultValue":"Удовлетворительное","readonly":true}', position: '0.18'},
-                        {name: 'id_payment_type', label: 'Способ оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.19","elementOrder":1,"defaultValue":"Платные услуги","readonly":true}', position: '0.19'},
+                        {name: 'id_payment_type', label: 'Способ оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.19","elementOrder":1,"defaultValue":"платные услуги","readonly":true}', position: '0.19'},
                         {name: 'word8', label: 'Диагноз ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.2","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"additionalACValue":[{"key_index":"dictionary_param1","value":"dictionary_param1","element":"word9"}],"paramDirectorySaveDisabled":true}', position: '0.2'},
                         {name: 'doctor_comment', label: 'Комментарий врача', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"egisz_name":["DynamicObjects","doctor_comment"]}', position: '0.21'},
                         {name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.22","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.22'},
