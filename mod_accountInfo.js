@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         mod_accountInfo
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  делает табличку фин.Инфо более наглядной.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountInfo*
@@ -58,5 +58,5 @@
                 }
             }
         }
-    }, 1000);
+    }, 3000);
 })();
