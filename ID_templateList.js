@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ID_templateList
 // @namespace    http://tampermonkey.net/
-// @version      1.0.3
+// @version      1.0.4
 // @description  Показывает ID доков в разделе Возможности
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/settings/features*
@@ -62,7 +62,7 @@
     };
 
     let observer = new MutationObserver((mutationsList, observer) => {
-        setTimeout(checkAndModifyDOM, 2000);
+        setTimeout(checkAndModifyDOM, 3000);
     });
 
     observer.observe(document, { childList: true, subtree: true });
