@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  определяет кол-во дубликатов справочников и позволяет их удалить, оставляя при этом самую НОВУЮ версию.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -147,5 +147,5 @@
             }
             console.info('JS has completed its work. Total requests:', requestCount);
         }
-    }, 3000);
+    }, 5000);
 })();
