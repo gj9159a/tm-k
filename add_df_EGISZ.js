@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.1.5
+// @version      1.1.6
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -606,15 +606,15 @@
                 let scenarios = scenarioInput.value.split('\n');
 
                 let fields = [
-                    {name: 'egisz_id', label: 'номер клиента в ЕГИСЗ', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1,}', position: '0.1'},
-                    {name: 'status_egisz', label: 'история статусов', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
-                    {name: 'family_name', label: 'фамилия', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
-                    {name: 'given_name', label: 'имя', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
-                    {name: 'middle_name', label: 'отчество', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
-                    {name: 'snils', label: 'снилс', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
-                    {name: 'id_speciality', label: 'специальность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
-                    {name: 'id_position', label: 'должность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
-                    {name: 'snils', label: 'СНИЛС', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                    {name: 'egisz_id', label: 'Номер клиента в ЕГИСЗ', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1,}', position: '0.1'},
+                    {name: 'status_egisz', label: 'История статусов', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+                    {name: 'family_name', label: 'Фамилия', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
+                    {name: 'given_name', label: 'Имя', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+                    {name: 'middle_name', label: 'Отчество', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                    {name: 'snils', label: 'СНИЛС (без тире)', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
+                    {name: 'id_speciality', label: 'Специальность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
+                    {name: 'id_position', label: 'Должность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
+                    {name: 'snils', label: 'СНИЛС (биз тире)', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
                     {name: 'inn', label: 'ИНН', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'remd_adress_code', label: 'Субъект федерации', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true,"readonly":true}', position: '0.14'},
                     {name: 'doc_number_nu', label: 'Номер договора', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.15","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"number"}}', position: '0.15'},
@@ -654,9 +654,9 @@
                     let fieldsTemplate = [
                         {name: 'egisz_fields', label: 'Поля ЕГИСЗ', model: 'DynamicObjects', scenarios: scenario, type: 'collapsible', config: '{"position":"0.1","elementOrder":1,"items":["status_egisz","last_status_egisz","send_egisz","id_visit_purpose","case_visit_type","admission_condition","id_case_result","word8","doctor_comment","id_payment_type","remd_execution_place","remd_service_event_type","id_document_type","remd_document_title","start_datetime","finish_datetime","remdLifeAnamnesis","remdAnamnesis","remdObjectiveStatus","remdConclusion","word9","remd_payment_type","remd_payment_doc_type","signature","signature_info"]}', position: '0.1'},
                         {name: 'case_egisz', label: 'Тип осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.11","elementOrder":1,"defaultValue":"CaseAmb"}', position: '0.11'},
-                        {name: 'status_egisz', label: 'статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
-                        {name: 'last_status_egisz', label: 'последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
-                        {name: 'send_egisz', label: 'чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.14","elementOrder":1,"elementClass":"_block"}', position: '0.14'},
+                        {name: 'status_egisz', label: 'Статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                        {name: 'last_status_egisz', label: 'Последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
+                        {name: 'send_egisz', label: 'Чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.14","elementOrder":1,"elementClass":"_block"}', position: '0.14'},
                         {name: 'id_case_result', label: 'Результат осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.15","elementOrder":1,"defaultValue":"Без изменения","readonly":true}', position: '0.15'},
                         {name: 'id_visit_purpose', label: 'Цель визита', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.16","elementOrder":1,"defaultValue":"лечебно-диагностическая","readonly":true}', position: '0.16'},
                         {name: 'case_visit_type', label: 'Первичность', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.17","elementOrder":1,"defaultValue":"Первичный","readonly":true}', position: '0.17'},
@@ -667,7 +667,7 @@
                         {name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.22","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.22'},
                         {name: 'remd_payment_type', label: 'Источник оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.23","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Средства пациента","readonly":true}', position: '0.23'},
                         {name: 'remd_payment_doc_type', label: 'Документ-основание оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.24","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Договор на оказание платных медицинских услуг","readonly":true}', position: '0.24'},
-                        {name: 'id_document_type', label: 'Тип Мед Документа', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.25","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Протокол консультации (CDA) Редакция 4","readonly":true}', position: '0.25'},
+                        {name: 'id_document_type', label: 'Тип мед. документа', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.25","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Протокол консультации (CDA) Редакция 4","readonly":true}', position: '0.25'},
                         {name: 'start_datetime', label: 'Время начала осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.26","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.26'},
                         {name: 'finish_datetime', label: 'Время окончания осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.27","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.27'},
                         {name: 'start_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.28","elementOrder":1}', position: '0.28'},
