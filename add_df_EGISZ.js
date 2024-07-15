@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.1.7
+// @version      1.1.8
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -674,8 +674,8 @@
                         {name: 'finish_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.29","elementOrder":1}', position: '0.29'},
                         {name: 'signature', label: 'Подпись ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'signature', config: '{"position":"0.9","elementOrder":1}', position: '0.9'},
                         {name: 'signature_info', label: 'Информация о подписи', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.91","elementOrder":1}', position: '0.91'},
-                        {name: 'remd_document_title', label: 'Заголовок документа РЭМД', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.291","elementOrder":1,"defaultValue":"Протокол консультации врача <Специальность>"}', position: '0.291'},
-                        {name: 'remd_execution_place', label: 'Место оказания услуги', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.292","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Амбулаторно-поликлиническое учреждение","readonly":true}', position: '0.292'},
+                        {name: 'remd_document_title', label: 'Заголовок документа РЭМД', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.291","elementOrder":1,"defaultValue":"Протокол консультации врача терапевта"}', position: '0.291'},
+                        {name: 'remd_execution_place', label: 'Место оказания услуги', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.292","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Иные медицинские организации","readonly":true}', position: '0.292'},
                         {name: 'remdAnamnesis', label: 'Анамнез заболевания', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.293","elementOrder":1,"egisz_name":["DynamicObjects","remdAnamnesis"]}', position: '0.293'},
                         {name: 'remdLifeAnamnesis', label: 'Анамнез жизни', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.294","elementOrder":1,"egisz_name":["DynamicObjects","remdLifeAnamnesis"]}', position: '0.294'},
                         {name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.295","elementOrder":1,"egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.295'},
