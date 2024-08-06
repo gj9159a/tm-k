@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.1.8
+// @version      1.1.9
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -163,10 +163,10 @@
 	<typeId root="2.16.840.1.113883.1.3" extension="POCD_MT000040"/>
 	<templateId root="1.2.643.5.1.13.2.7.5.1.5.9.4"/>
 	<id root="{{account.remd_oid}}.100.1.1.51" extension="{{egis_prep_data.caseDto.HistoryNumber}}"/>
-	<code code="5" codeSystem="1.2.643.5.1.13.13.11.1522" codeSystemVersion="4.45" codeSystemName="Виды медицинской документации" displayName="Протокол консультации"/>
+	<code code="5" codeSystem="1.2.643.5.1.13.13.11.1522" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocumentation_type_version}}" codeSystemName="Виды медицинской документации" displayName="Протокол консультации"/>
 	<title>{{dynamic_object.remd_document_title}}</title>
 	<effectiveTime value="{{egisz_created}}"/>
-	<confidentialityCode code="N" codeSystem="1.2.643.5.1.13.13.99.2.285" codeSystemVersion="1.1" codeSystemName="Уровень конфиденциальности медицинского документа" displayName="Обычный"/>
+	<confidentialityCode code="N" codeSystem="1.2.643.5.1.13.13.99.2.285" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_confidentiality_medicaldocument_version}}" codeSystemName="Уровень конфиденциальности медицинского документа" displayName="Обычный"/>
 	<languageCode code="ru-RU"/>
 	<setId root="{{account.remd_oid}}.100.1.1.50" extension="{{egis_prep_data.caseDto.HistoryNumber}}"/>
 	<versionNumber value="1"/>
@@ -175,7 +175,7 @@
 			<id root="{{account.remd_oid}}.100.1.1.10" extension="{{egis_prep_data.caseDto.IdPatientMis}}"/>
 			<id root="1.2.643.100.3" extension="{{client.snils}}"/>
 			<identity:IdentityDoc>
-				<identity:IdentityCardType xsi:type="CD" code="1" codeSystem="1.2.643.5.1.13.13.99.2.48" codeSystemVersion="4.2" codeSystemName="Документы, удостоверяющие личность" displayName="Паспорт гражданина РФ"/> <!--будем передавать только паспорт-->
+				<identity:IdentityCardType xsi:type="CD" code="1" codeSystem="1.2.643.5.1.13.13.99.2.48" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_identification_documents_version}}" codeSystemName="Документы, удостоверяющие личность" displayName="Паспорт гражданина РФ"/> <!--будем передавать только паспорт-->
 				<identity:Series xsi:type="ST">{{client.passport_serial}}</identity:Series>
 				<identity:Number xsi:type="ST">{{client.passport_number}}</identity:Number>
 				<identity:IssueOrgName xsi:type="ST">{{client.passport_author}}</identity:IssueOrgName>
@@ -183,14 +183,14 @@
 				<identity:IssueDate xsi:type="TS" value="{{client.passport_created_YYYYMMDD}}"/>
 			</identity:IdentityDoc>
 			<identity:InsurancePolicy{{#client}}{{^oms_polis_number_nu}} nullFlavor="NI"/>{{/oms_polis_number_nu}}{{#oms_polis_number_nu}}>
-				<identity:InsurancePolicyType xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_oms_type}}" codeSystem="1.2.643.5.1.13.13.11.1035" codeSystemVersion="1.3" codeSystemName="Виды полиса обязательного медицинского страхования" displayName="{{client.remd_oms_type}}"/>{{#oms_polis_serial_nu}}
+				<identity:InsurancePolicyType xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_oms_type}}" codeSystem="1.2.643.5.1.13.13.11.1035" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_oms_type_version}}" codeSystemName="Виды полиса обязательного медицинского страхования" displayName="{{client.remd_oms_type}}"/>{{#oms_polis_serial_nu}}
 				<identity:Series xsi:type="ST">{{oms_polis_serial_nu}}</identity:Series>{{/oms_polis_serial_nu}}
 				<identity:Number xsi:type="ST">{{oms_polis_number_nu}}</identity:Number>
 			</identity:InsurancePolicy>{{/oms_polis_number_nu}}{{/client}}
 			<addr>
-				<address:Type xsi:type="CD" code="3" codeSystem="1.2.643.5.1.13.13.11.1504" codeSystemVersion="1.3" codeSystemName="Тип адреса пациента" displayName="Адрес фактического проживания (пребывания)"/>
+				<address:Type xsi:type="CD" code="3" codeSystem="1.2.643.5.1.13.13.11.1504" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_patients_address_type_version}}" codeSystemName="Тип адреса пациента" displayName="Адрес фактического проживания (пребывания)"/>
 				<streetAddressLine>{{client.living_address}}</streetAddressLine>
-				<address:stateCode xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_adress_code}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="6.3" codeSystemName="Субъекты Российской Федерации" displayName="{{client.remd_adress_code}}"/>
+				<address:stateCode xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_adress_code}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{client.remd_adress_code}}"/>
 				<postalCode nullFlavor="NI"/>
 				<fias:Address nullFlavor="NI"/>
 			</addr>
@@ -200,7 +200,7 @@
 					<family>{{client.second_name}}</family>
 					<given>{{client.first_name}}</given>
 				</name>
-				<administrativeGenderCode code="{{client.sex_bool}}" codeSystem="1.2.643.5.1.13.13.11.1040" codeSystemVersion="2.1" codeSystemName="Пол пациента" displayName="{{client.sex}}"/>
+				<administrativeGenderCode code="{{client.sex_bool}}" codeSystem="1.2.643.5.1.13.13.11.1040" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_patient_gender_version}}" codeSystemName="Пол пациента" displayName="{{client.sex}}"/>
 				<birthTime value="{{client.birth_date_YYYYMMDD}}"/>
 			</patient>
 			<providerOrganization>
@@ -213,7 +213,7 @@
 				<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 				<addr>
 					<streetAddressLine>{{account.legal_address}}</streetAddressLine>
-					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="6.3" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
+					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
 					<postalCode>{{account.legal_index}}</postalCode>
 					<fias:Address nullFlavor="NI"/>
 				</addr>
@@ -225,7 +225,7 @@
 		<assignedAuthor>
 			<id root="{{account.remd_oid}}.100.1.1.70" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.IdPersonMis}}"/>
 			<id root="1.2.643.100.3" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.snils}}"/>
-			<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="7.5" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
+			<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_id_position_version}}" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
 			<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 			<assignedPerson>
 				<name>
@@ -242,7 +242,7 @@
 				<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 				<addr>
 					<streetAddressLine>{{account.legal_address}}</streetAddressLine>
-					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="6.3" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
+					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
 					<postalCode>{{account.legal_index}}</postalCode>
 					<fias:Address nullFlavor="NI"/>
 				</addr>
@@ -257,7 +257,7 @@
 				<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 				<addr>
 					<streetAddressLine>{{account.legal_address}}</streetAddressLine>
-					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="6.3" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
+					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
 					<postalCode>{{account.legal_index}}</postalCode>
 					<fias:Address nullFlavor="NI"/>
 				</addr>
@@ -278,7 +278,7 @@
 		<assignedEntity>
 			<id root="{{account.remd_oid}}.100.1.1.70" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.IdPersonMis}}"/>
 			<id root="1.2.643.100.3" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.snils}}"/>
-			<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="7.5" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
+			<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_id_position_version}}" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
 			<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 			<assignedPerson>
 				<name>
@@ -295,7 +295,7 @@
 				<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 				<addr>
 					<streetAddressLine>{{account.legal_address}}</streetAddressLine>
-					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="6.3" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
+					<address:stateCode xsi:type="CD" code="{{account.address_code_value}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{account.address_code_key}}"/>
 					<postalCode>{{account.legal_index}}</postalCode>
 					<fias:Address nullFlavor="NI"/>
 				</addr>
@@ -304,10 +304,10 @@
 	</legalAuthenticator>
 	<participant typeCode="IND">
 		<associatedEntity classCode="GUAR">
-			<code code="{{egis_prep_data.modifiedDynCardData.remd_payment_type}}" codeSystem="1.2.643.5.1.13.13.11.1039" codeSystemVersion="4.3" codeSystemName="Источники оплаты медицинской помощи" displayName="{{dynamic_object.remd_payment_type}}"/>
+			<code code="{{egis_prep_data.modifiedDynCardData.remd_payment_type}}" codeSystem="1.2.643.5.1.13.13.11.1039" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_payment_type_version}}" codeSystemName="Источники оплаты медицинской помощи" displayName="{{dynamic_object.remd_payment_type}}"/>
 			<identity:DocInfo{{#egis_prep_data.modifiedDynCardData}}{{#no_doc}} nullFlavor="NAV"/>{{/no_doc}}{{^no_doc}}>
-				<identity:IdentityDocType xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.remd_payment_doc_type}}" codeSystem="1.2.643.5.1.13.13.99.2.724" codeSystemVersion="1.1" codeSystemName="Типы документов оснований" displayName="{{dynamic_object.remd_payment_doc_type}}"/>
-				<identity:InsurancePolicyType {{#is_oms}}xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_oms_type}}" codeSystem="1.2.643.5.1.13.13.11.1035" codeSystemVersion="1.3" codeSystemName="Виды полиса обязательного медицинского страхования" displayName="{{client.remd_oms_type}}"{{/is_oms}}{{^is_oms}} nullFlavor="NA"{{/is_oms}}/>
+				<identity:IdentityDocType xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.remd_payment_doc_type}}" codeSystem="1.2.643.5.1.13.13.99.2.724" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_payment_doc_type_version}}" codeSystemName="Типы документов оснований" displayName="{{dynamic_object.remd_payment_doc_type}}"/>
+				<identity:InsurancePolicyType {{#is_oms}}xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_oms_type}}" codeSystem="1.2.643.5.1.13.13.11.1035" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_oms_type_version}}" codeSystemName="Виды полиса обязательного медицинского страхования" displayName="{{client.remd_oms_type}}"{{/is_oms}}{{^is_oms}} nullFlavor="NA"{{/is_oms}}/>
 				<identity:Series {{#is_oms}}{{#client}}{{#oms_polis_serial_nu}}xsi:type="ST">{{oms_polis_serial_nu}}</identity:Series{{/oms_polis_serial_nu}}{{^oms_polis_serial_nu}} nullFlavor="NA"/{{/oms_polis_serial_nu}}{{/client}}{{/is_oms}}{{#is_dms}}{{#dynamic_object}}{{#dms_serial_nu}}xsi:type="ST">{{dms_serial_nu}}</identity:Series{{/dms_serial_nu}}{{^dms_serial_nu}} nullFlavor="NA"/{{/dms_serial_nu}}{{/dynamic_object}}{{/is_dms}}{{^is_oms}}{{^is_dms}}nullFlavor="NA"/{{/is_dms}}{{/is_oms}}>
 				<identity:Number xsi:type="ST">{{#is_oms}}{{client.oms_polis_number_nu}}{{/is_oms}}{{#is_dms}}{{dynamic_object.dms_number_nu}}{{/is_dms}}{{^is_oms}}{{^is_dms}}{{client.doc_number_nu}}{{/is_dms}}{{/is_oms}}
 				</identity:Number>
@@ -322,7 +322,7 @@
 	</participant>
 	<documentationOf>
 		<serviceEvent>
-			<code code="{{egis_prep_data.modifiedDynCardData.remd_service_event_type}}" codeSystem="1.2.643.5.1.13.13.99.2.726" codeSystemVersion="1.1" codeSystemName="Типы документированных событий" displayName="{{dynamic_object.remd_service_event_type}}"/>
+			<code code="{{egis_prep_data.modifiedDynCardData.remd_service_event_type}}" codeSystem="1.2.643.5.1.13.13.99.2.726" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_service_event_type_version}}" codeSystemName="Типы документированных событий" displayName="{{dynamic_object.remd_service_event_type}}"/>
 			<effectiveTime>
 				<low value="{{dynamic_object.start_datetime_YYYYMMDDHHIIGMT}}"/>
 				<high value="{{dynamic_object.finish_datetime_YYYYMMDDHHIIGMT}}"/>
@@ -331,7 +331,7 @@
 				<assignedEntity>
 					<id root="{{account.remd_oid}}.100.1.1.70" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.IdPersonMis}}"/>
 					<id root="1.2.643.100.3" extension="{{egis_prep_data.caseDto.Author.Doctor.Person.snils}}"/>
-					<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="7.5" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
+					<code code="{{egis_prep_data.caseDto.Author.Doctor.IdPosition}}" codeSystem="1.2.643.5.1.13.13.11.1002" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_id_position_version}}" codeSystemName="Должности медицинских и фармацевтических работников" displayName="{{document_author.id_position}}"/>
 					<telecom value="tel:{{account.legal_phone}}" use="WP"/>
 					<assignedPerson>
 						<name>
@@ -361,7 +361,7 @@
 		<structuredBody>
 			<component>
 				<section>
-					<code code="DOCINFO" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="1.19" codeSystemName="Секции электронных медицинских документов" displayName="Сведения о документе"/>
+					<code code="DOCINFO" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Сведения о документе"/>
 					<title>Общие сведения</title>
 					<text>
 						<table>
@@ -387,29 +387,29 @@
 					</text>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="809" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Шифр по МКБ-10">
+							<code code="809" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Шифр по МКБ-10">
 							</code>
-							<value xsi:type="CD" code="{{egis_prep_data.MedRecord.DiagnosisInfo.MkbCode}}" codeSystem="1.2.643.5.1.13.13.11.1005" codeSystemVersion="2.19" codeSystemName="Международная статистическая классификация болезней и проблем, связанных со здоровьем (10-й пересмотр)" displayName="{{dynamic_object.word}}"/>
+							<value xsi:type="CD" code="{{egis_prep_data.MedRecord.DiagnosisInfo.MkbCode}}" codeSystem="1.2.643.5.1.13.13.11.1005" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.international_stats_diseases_10_version}}" codeSystemName="Международная статистическая классификация болезней и проблем, связанных со здоровьем (10-й пересмотр)" displayName="{{dynamic_object.word}}"/>
 						</observation>
 					</entry>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="800" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Обращение">
+							<code code="800" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Обращение">
 							</code>
-							<value xsi:type="CD" code="{{egis_prep_data.caseDto.IdCaseType}}" codeSystem="1.2.643.5.1.13.13.11.1007" codeSystemVersion="1.34" codeSystemName="Вид случая госпитализации или обращения (первичный, повторный)" displayName="{{dynamic_object.case_visit_type}}"/>
+							<value xsi:type="CD" code="{{egis_prep_data.caseDto.CaseVisitType}}" codeSystem="1.2.643.5.1.13.13.11.1007" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.case_visit_type_version}}" codeSystemName="Вид случая госпитализации или обращения (первичный, повторный)" displayName="{{dynamic_object.case_visit_type}}"/>
 						</observation>
 					</entry>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="801" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Место проведения"/>
-							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.remd_execution_place}}" codeSystem="1.2.643.5.1.13.13.11.1008" codeSystemVersion="4.3" codeSystemName="Место оказания медицинской помощи" displayName="{{dynamic_object.remd_execution_place}}"/>
+							<code code="801" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Место проведения"/>
+							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.remd_execution_place}}" codeSystem="1.2.643.5.1.13.13.11.1008" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_execution_place_version}}" codeSystemName="Место оказания медицинской помощи" displayName="{{dynamic_object.remd_execution_place}}"/>
 						</observation>
 					</entry>
 				</section>
 			</component>
 			<component>
 				<section>
-					<code code="ANAM" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="1.19" codeSystemName="Секции электронных медицинских документов" displayName="Анамнез заболевания"/>
+					<code code="ANAM" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Анамнез заболевания"/>
 					<title>Анамнез заболевания</title>
 					<text>
 						<table>
@@ -427,7 +427,7 @@
 					</text>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="7006" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Текстовое описание"/>
+							<code code="7006" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Текстовое описание"/>
 							<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdAnamnesis}}</value>
 						</observation>
 					</entry>
@@ -435,7 +435,7 @@
 			</component>
 			<component>
 				<section>
-					<code code="LANAM" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="1.19" codeSystemName="Секции электронных медицинских документов" displayName="Анамнез жизни"/>
+					<code code="LANAM" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Анамнез жизни"/>
 					<title>Анамнез жизни</title>
 					<text>
 						<table>
@@ -453,7 +453,7 @@
 					</text>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="7006" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Текстовое описание"/>
+							<code code="7006" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Текстовое описание"/>
 							<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdLifeAnamnesis}}</value>
 						</observation>
 					</entry>
@@ -461,7 +461,7 @@
 			</component>
 			<component>
 				<section>
-					<code code="RESCONS" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="1.19" codeSystemName="Секции электронных медицинских документов" displayName="Консультации врачей специалистов"/>
+					<code code="RESCONS" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Консультации врачей специалистов"/>
 					<title>Консультация врача специалиста</title>
 					<text>
 						<table>
@@ -495,25 +495,25 @@
 					</text>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="804" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Состояние пациента"/>
-							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.admission_condition}}" codeSystem="1.2.643.5.1.13.13.11.1006" codeSystemVersion="2.1" codeSystemName="Степень тяжести состояния пациента" displayName="{{dynamic_object.admission_condition}}"/>
+							<code code="804" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Состояние пациента"/>
+							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.admission_condition}}" codeSystem="1.2.643.5.1.13.2.1.1.111" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.admission_condition_version}}" codeSystemName="Степень тяжести состояния пациента" displayName="{{dynamic_object.admission_condition}}"/>
 						</observation>
 					</entry>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="805" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Протокол консультации"/>
+							<code code="805" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Протокол консультации"/>
 							<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdObjectiveStatus}}</value>
 						</observation>
 					</entry>
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
-							<code code="806" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Заключение консультации"/>
+							<code code="806" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Заключение консультации"/>
 							<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdConclusion}}</value>
 						</observation>
 					</entry>
 					<component>
 						<section>
-							<code code="DGN" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="1.19" codeSystemName="Секции электронных медицинских документов" displayName="Диагнозы"/>
+							<code code="DGN" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Диагнозы"/>
 							<title>Диагнозы</title>
 							<text>
 								<table>
@@ -531,7 +531,7 @@
 							</text>
 							<entry>
 								<observation classCode="OBS" moodCode="EVN">
-									<code code="806" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="1.34" codeSystemName="Кодируемые поля CDA документов" displayName="Заключение консультации"/>
+									<code code="806" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Заключение консультации"/>
 									<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdDiagnosis}}</value>
 								</observation>
 							</entry>
