@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         autoadd_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  Автоматизированное добавление и заполнение справочников
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -81,7 +81,7 @@
         goAddButton.textContent = 'Поехали добавлять справочники!';
         goAddButton.style.position = 'absolute';
         goAddButton.style.right = '10%';
-        goAddButton.style.top = '10%'; // Позиция будет изменяться динамически
+        goAddButton.style.top = '10%';
         goAddButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(goAddButton);
 
@@ -89,7 +89,7 @@
         goFillButton.textContent = 'Поехали заполнять справочники!';
         goFillButton.style.position = 'absolute';
         goFillButton.style.right = '10%';
-        goFillButton.style.top = '10%'; // Позиция будет изменяться динамически
+        goFillButton.style.top = '10%';
         goFillButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(goFillButton);
 
