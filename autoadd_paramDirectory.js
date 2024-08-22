@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         autoadd_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Автоматизированное добавление и заполнение справочников
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -56,7 +56,7 @@
         let valueInput = document.createElement('textarea');
         valueInput.rows = 20;
         valueInput.cols = 30;
-        valueInput.placeholder = 'Введите значения для каждого справочника, каждый с новой строки';
+        valueInput.placeholder = 'Введите значения для каждого справочника из области слева в соответствующие строки, используя необходимый разделитель (например, Слабый#Нормальный#Сильный)';
         valueInput.style.display = 'none';
         valueInput.style.whiteSpace = 'nowrap';
         rowContainer.appendChild(valueInput);
