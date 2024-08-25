@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.1.9
+// @version      1.2.0
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -48,11 +48,12 @@
         addDoc1Button.style.display = 'none';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(addDoc1Button);
 
-        const remdOidInput = createInputField('Введите значение для {{account.remd_oid}} Пример: 1.2.643.5.1.13.13.12.2.23.80641', '5%', '20%');
-        const medicalLicenseInput = createInputField('Введите значение для {{account.medical_license}} Пример: Л041-01126-23/00096607', '5%', '30%');
-        const medicalLicenseAuthorInput = createInputField('Введите значение для {{account.medical_license_author}} Пример: Министерство здравоохранения Краснодарского края. Дата регистрации: 31.03.2022', '5%', '40%');
-        const addressCodeValueInput = createInputField('Введите значение для {{account.address_code_value}} Пример: 23', '5%', '50%');
-        const addressCodeKeyInput = createInputField('Введите значение для {{account.address_code_key}} Пример: Краснодарский край', '5%', '60%');
+        const telInput = createInputField('Введите значение для {{account.legal_phone}} Пример: +79991234567', '5%', '20%');
+        const remdOidInput = createInputField('Введите значение для {{account.remd_oid}} Пример: 1.2.643.5.1.13.13.12.2.23.80641', '5%', '30%');
+        const medicalLicenseInput = createInputField('Введите значение для {{account.medical_license}} Пример: Л041-01126-23/00096607', '5%', '40%');
+        const medicalLicenseAuthorInput = createInputField('Введите значение для {{account.medical_license_author}} Пример: Министерство здравоохранения Краснодарского края. Дата регистрации: 31.03.2022', '5%', '50%');
+        const addressCodeValueInput = createInputField('Введите значение для {{account.address_code_value}} Пример: 23', '5%', '60%');
+        const addressCodeKeyInput = createInputField('Введите значение для {{account.address_code_key}} Пример: Краснодарский край', '5%', '70%');
 
         function createInputField(placeholder, right, top) {
             const input = document.createElement('textarea');
@@ -106,6 +107,7 @@
             createButton.textContent = 'Поехали!';
             createButton.style.backgroundColor = '';
             createButton.style.color = '';
+			telInput.style.display = 'none';
             remdOidInput.style.display = 'none';
             medicalLicenseInput.style.display = 'none';
             medicalLicenseAuthorInput.style.display = 'none';
@@ -142,6 +144,7 @@
 
         addDoc1Button.addEventListener('click', function(event) {
             event.preventDefault();
+			telInput.style.display = 'block';
             remdOidInput.style.display = 'block';
             medicalLicenseInput.style.display = 'block';
             medicalLicenseAuthorInput.style.display = 'block';
@@ -179,7 +182,7 @@
 				<identity:Series xsi:type="ST">{{client.passport_serial}}</identity:Series>
 				<identity:Number xsi:type="ST">{{client.passport_number}}</identity:Number>
 				<identity:IssueOrgName xsi:type="ST">{{client.passport_author}}</identity:IssueOrgName>
-				<identity:IssueOrgCode {{#client}}{{^passport_code}} nullFlavor="NI"/>{{/passport_code}}{{#passport_code}}xsi:type="ST">{{passport_code}}</identity:IssueOrgCode>{{/passport_code}}{{/client}}
+				<identity:IssueOrgCode{{#client}}{{^passport_code}} nullFlavor="NI"/>{{/passport_code}}{{#passport_code}} xsi:type="ST">{{passport_code}}</identity:IssueOrgCode>{{/passport_code}}{{/client}}
 				<identity:IssueDate xsi:type="TS" value="{{client.passport_created_YYYYMMDD}}"/>
 			</identity:IdentityDoc>
 			<identity:InsurancePolicy{{#client}}{{^oms_polis_number_nu}} nullFlavor="NI"/>{{/oms_polis_number_nu}}{{#oms_polis_number_nu}}>
@@ -199,6 +202,7 @@
 				<name>
 					<family>{{client.second_name}}</family>
 					<given>{{client.first_name}}</given>
+					<identity:Patronymic xsi:type="ST">{{client.patron_name}}</identity:Patronymic>
 				</name>
 				<administrativeGenderCode code="{{client.sex_bool}}" codeSystem="1.2.643.5.1.13.13.11.1040" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_patient_gender_version}}" codeSystemName="Пол пациента" displayName="{{client.sex}}"/>
 				<birthTime value="{{client.birth_date_YYYYMMDD}}"/>
@@ -314,7 +318,7 @@
 				<identity:INN{{#is_dms}} nullFlavor="NI"/{{/is_dms}}{{#is_oms}} nullFlavor="NI"/{{/is_oms}}{{^is_oms}}{{^is_dms}} xsi:type="ST">{{client.inn}}</identity:INN{{/is_dms}}{{/is_oms}}>
 				<identity:effectiveTime>
 					<identity:low xsi:type="TS" value="{{#is_oms}}{{client.oms_start_datetime_YYYYMMDD}}{{/is_oms}}{{#is_dms}}{{dynamic_object.dms_start_datetime_YYYYMMDD}}{{/is_dms}}{{^is_oms}}{{^is_dms}}{{client.date_doc_nu_YYYYMMDD}}{{/is_dms}}{{/is_oms}}"/>
-					<identity:high {{#is_oms}}{{#client}}{{#oms_finish_datetime_nu}}xsi:type="TS" value="{{oms_finish_datetime_nu_YYYYMMDD}}"{{/oms_finish_datetime_nu}}{{^oms_finish_datetime_nu}}nullFlavor="NAV"{{/oms_finish_datetime_nu}}{{/client}}{{/is_oms}}{{#is_dms}}{{#dynamic_object}}{{#dms_finish_datetime_nu}}xsi:type="TS" value="{{dms_finish_datetime_nu_YYYYMMDD}}"{{/dms_finish_datetime_nu}}{{^dms_finish_datetime_nu}}nullFlavor="NA"{{/dms_finish_datetime_nu}}{{/dynamic_object}}{{/is_dms}}{{^is_oms}}{{^is_dms}}nullFlavor="NA"{{/is_dms}}{{/is_oms}}/>
+					<identity:high {{#is_oms}}{{#client}}{{#oms_finish_datetime_nu}}xsi:type="TS" value="{{oms_finish_datetime_nu_YYYYMMDD}}"{{/oms_finish_datetime_nu}}{{^oms_finish_datetime_nu}}nullFlavor="NAV"{{/oms_finish_datetime_nu}}{{/client}}{{/is_oms}}{{#is_dms}}{{#dynamic_object}}{{#dms_finish_datetime_nu}}xsi:type="TS" value="{{dms_finish_datetime_nu_YYYYMMDD}}"{{/dms_finish_datetime_nu}}{{^dms_finish_datetime_nu}}nullFlavor="NA"{{/dms_finish_datetime_nu}}{{/dynamic_object}}{{/is_dms}}{{^is_oms}}{{^is_dms}}xsi:type="TS" value="{{client.date_doc_finish_nu_YYYYMMDD}}"{{/is_dms}}{{/is_oms}}/>
 				</identity:effectiveTime>
 			</identity:DocInfo>
 			<scopingOrganization nullFlavor="NI"/>{{/no_doc}}{{/egis_prep_data.modifiedDynCardData}}
@@ -396,7 +400,7 @@
 						<observation classCode="OBS" moodCode="EVN">
 							<code code="800" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Обращение">
 							</code>
-							<value xsi:type="CD" code="{{egis_prep_data.caseDto.CaseVisitType}}" codeSystem="1.2.643.5.1.13.13.11.1007" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.case_visit_type_version}}" codeSystemName="Вид случая госпитализации или обращения (первичный, повторный)" displayName="{{dynamic_object.case_visit_type}}"/>
+							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.case_visit_type}}" codeSystem="1.2.643.5.1.13.13.11.1007" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.case_visit_type_version}}" codeSystemName="Вид случая госпитализации или обращения (первичный, повторный)" displayName="{{dynamic_object.case_visit_type}}"/>
 						</observation>
 					</entry>
 					<entry>
@@ -496,7 +500,7 @@
 					<entry>
 						<observation classCode="OBS" moodCode="EVN">
 							<code code="804" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Состояние пациента"/>
-							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.admission_condition}}" codeSystem="1.2.643.5.1.13.2.1.1.111" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.admission_condition_version}}" codeSystemName="Степень тяжести состояния пациента" displayName="{{dynamic_object.admission_condition}}"/>
+							<value xsi:type="CD" code="{{egis_prep_data.modifiedDynCardData.admission_condition}}" codeSystem="1.2.643.5.1.13.13.11.1006" codeSystemVersion="2.1" codeSystemName="Степень тяжести состояния пациента" displayName="{{dynamic_object.admission_condition}}"/>
 						</observation>
 					</entry>
 					<entry>
@@ -549,6 +553,7 @@
             for (let i = 0; i < items.length; i++) {
                 let currentItem = items[i];
                 let documentBodyTemplate = currentItem.document_body_template
+                    .replace(/{{account.legal_phone}}/g, telInput.value)
                     .replace(/{{account.remd_oid}}/g, remdOidInput.value)
                     .replace(/{{account.medical_license}}/g, medicalLicenseInput.value)
                     .replace(/{{account.medical_license_author}}/g, medicalLicenseAuthorInput.value)
@@ -606,20 +611,23 @@
                 let scenarios = scenarioInput.value.split('\n');
 
                 let fields = [
-                    {name: 'egisz_id', label: 'Номер клиента в ЕГИСЗ', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1,}', position: '0.1'},
-                    {name: 'status_egisz', label: 'История статусов', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
-                    {name: 'family_name', label: 'Фамилия', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
-                    {name: 'given_name', label: 'Имя', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
-                    {name: 'middle_name', label: 'Отчество', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
-                    {name: 'snils', label: 'СНИЛС (только цифры)', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
-                    {name: 'id_speciality', label: 'Специальность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
-                    {name: 'id_position', label: 'Должность', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
-                    {name: 'snils', label: 'СНИЛС (только цифры)', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
-                    {name: 'inn', label: 'ИНН', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
-                    {name: 'remd_adress_code', label: 'Субъект федерации', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true,"readonly":true}', position: '0.14'},
-                    {name: 'doc_number_nu', label: 'Номер договора', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.15","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"number"}}', position: '0.15'},
-                    {name: 'date_doc_nu', label: 'Дата договора', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.16","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"last_appointment_date_human_readable_dmy"}}', position: '0.16'},
-                    {name: 'date_doc_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.17","elementOrder":1}', position: '0.17'}
+                    {name: 'egisz_id', label: 'Номер клиента [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.09","elementOrder":1,}', position: '0.09'},
+                    {name: 'status_egisz', label: 'История статусов [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
+                    {name: 'family_name', label: 'Фамилия [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
+                    {name: 'given_name', label: 'Имя [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+                    {name: 'middle_name', label: 'Отчество [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                    {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
+                    {name: 'id_speciality', label: 'Специальность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
+                    {name: 'id_position', label: 'Должность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
+					{name: 'passport_code', label: 'Код подразделения, выдавшего паспорт (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+                    {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                    //{name: 'inn', label: 'ИНН [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
+                    {name: 'remd_adress_code', label: 'Субъект федерации [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true,"readonly":true}', position: '0.14'},
+                    {name: 'doc_number_nu', label: 'Номер договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.15","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"number"}}', position: '0.15'},
+                    {name: 'date_doc_nu', label: 'Дата договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.16","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"last_appointment_date_human_readable_dmy"}}', position: '0.16'},
+                    {name: 'date_doc_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.17","elementOrder":1}', position: '0.17'},
+                    {name: 'date_doc_finish_nu', label: 'Дата окончания договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.18","elementOrder":1}', position: '0.18'},
+                    {name: 'date_doc_finish_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.19","elementOrder":1}', position: '0.19'}
                 ];
 
                 for (let field of fields) {
