@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.0
+// @version      1.2.1
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -156,9 +156,9 @@
 
         let items = [
             {
-                name: 'Протокол консультации (CDA) Редакция 4',
+                name: 'Протокол консультации (CDA) Редакция 4 v240826',
                 shown_at: 'Динамические сущности',
-                document_name_template: 'Протокол консультации (CDA) Редакция 4',
+                document_name_template: 'Протокол консультации (CDA) Редакция 4 v240826',
                 document_body_template: `xmldocgen<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="Obs.xsl"?>
 <ClinicalDocument xmlns="urn:hl7-org:v3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:identity="urn:hl7-ru:identity" xmlns:address="urn:hl7-ru:address" xmlns:medService="urn:hl7-ru:medService" xmlns:fias="urn:hl7-ru:fias">
