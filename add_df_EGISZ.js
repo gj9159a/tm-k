@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.3
+// @version      1.2.4
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -48,7 +48,7 @@
         addDoc1Button.style.display = 'none';
         document.querySelector("#DynamicFields > div.element-cr._label-left._inline").appendChild(addDoc1Button);
 
-        //const telInput = createInputField('Введите значение для {{account.legal_phone}} Пример: +79991234567', '5%', '20%');
+        const telInput = createInputField('Введите значение для {{account.legal_phone}} Пример: +79991234567', '5%', '20%');
         const remdOidInput = createInputField('Введите значение для {{account.remd_oid}} Пример: 1.2.643.5.1.13.13.12.2.23.80641', '5%', '20%');
         const medicalLicenseInput = createInputField('Введите значение для {{account.medical_license}} Пример: Л041-01126-23/00096607', '5%', '30%');
         const medicalLicenseAuthorInput = createInputField('Введите значение для {{account.medical_license_author}} Пример: Министерство здравоохранения Краснодарского края. Дата регистрации: 31.03.2022', '5%', '40%');
