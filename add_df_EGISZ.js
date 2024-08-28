@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.2
+// @version      1.2.3
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -107,7 +107,7 @@
             createButton.textContent = 'Поехали!';
             createButton.style.backgroundColor = '';
             createButton.style.color = '';
-			//telInput.style.display = 'none';
+			telInput.style.display = 'none';
             remdOidInput.style.display = 'none';
             medicalLicenseInput.style.display = 'none';
             medicalLicenseAuthorInput.style.display = 'none';
@@ -144,7 +144,7 @@
 
         addDoc1Button.addEventListener('click', function(event) {
             event.preventDefault();
-			//telInput.style.display = 'block';
+			telInput.style.display = 'block';
             remdOidInput.style.display = 'block';
             medicalLicenseInput.style.display = 'block';
             medicalLicenseAuthorInput.style.display = 'block';
@@ -553,7 +553,7 @@
             for (let i = 0; i < items.length; i++) {
                 let currentItem = items[i];
                 let documentBodyTemplate = currentItem.document_body_template
-                    //.replace(/{{account.legal_phone}}/g, telInput.value)
+                    .replace(/{{account.legal_phone}}/g, telInput.value)
                     .replace(/{{account.remd_oid}}/g, remdOidInput.value)
                     .replace(/{{account.medical_license}}/g, medicalLicenseInput.value)
                     .replace(/{{account.medical_license_author}}/g, medicalLicenseAuthorInput.value)
