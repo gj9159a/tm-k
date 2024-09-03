@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2.6
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -177,21 +177,14 @@
 		<patientRole>
 			<id root="{{account.remd_oid}}.100.1.1.10" extension="{{egis_prep_data.caseDto.IdPatientMis}}"/>
 			<id root="1.2.643.100.3" extension="{{client.snils}}"/>
-			<identity:IdentityDoc>
-				<identity:IdentityCardType xsi:type="CD" code="1" codeSystem="1.2.643.5.1.13.13.99.2.48" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_identification_documents_version}}" codeSystemName="Документы, удостоверяющие личность" displayName="Паспорт гражданина РФ"/> <!--будем передавать только паспорт-->
-				<identity:Series xsi:type="ST">{{client.passport_serial}}</identity:Series>
-				<identity:Number xsi:type="ST">{{client.passport_number}}</identity:Number>
-				<identity:IssueOrgName xsi:type="ST">{{client.passport_author}}</identity:IssueOrgName>
-				<identity:IssueOrgCode{{#client}}{{^passport_code}} nullFlavor="NI"/>{{/passport_code}}{{#passport_code}} xsi:type="ST">{{passport_code}}</identity:IssueOrgCode>{{/passport_code}}{{/client}}
-				<identity:IssueDate xsi:type="TS" value="{{client.passport_created_YYYYMMDD}}"/>
-			</identity:IdentityDoc>
+			<identity:IdentityDoc nullFlavor="NI"/>
 			<identity:InsurancePolicy{{#client}}{{^oms_polis_number_nu}} nullFlavor="NI"/>{{/oms_polis_number_nu}}{{#oms_polis_number_nu}}>
 				<identity:InsurancePolicyType xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_oms_type}}" codeSystem="1.2.643.5.1.13.13.11.1035" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_oms_type_version}}" codeSystemName="Виды полиса обязательного медицинского страхования" displayName="{{client.remd_oms_type}}"/>{{#oms_polis_serial_nu}}
 				<identity:Series xsi:type="ST">{{oms_polis_serial_nu}}</identity:Series>{{/oms_polis_serial_nu}}
 				<identity:Number xsi:type="ST">{{oms_polis_number_nu}}</identity:Number>
 			</identity:InsurancePolicy>{{/oms_polis_number_nu}}{{/client}}
 			<addr>
-				<address:Type xsi:type="CD" code="3" codeSystem="1.2.643.5.1.13.13.11.1504" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_patients_address_type_version}}" codeSystemName="Тип адреса пациента" displayName="Адрес фактического проживания (пребывания)"/>
+				<address:Type xsi:type="CD" code="3" codeSystem="1.2.643.5.1.13.13.11.1504" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_patients_address_type_version}}" codeSystemName="Тип адреса пациента" displayName="Адрес фактического проживания"/>
 				<streetAddressLine>{{client.living_address}}</streetAddressLine>
 				<address:stateCode xsi:type="CD" code="{{egis_prep_data.patientDataAdditional.patient.remd_adress_code}}" codeSystem="1.2.643.5.1.13.13.99.2.206" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_adress_code_version}}" codeSystemName="Субъекты Российской Федерации" displayName="{{client.remd_adress_code}}"/>
 				<postalCode nullFlavor="NI"/>
@@ -465,7 +458,7 @@
 			</component>
 			<component>
 				<section>
-					<code code="RESCONS" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Консультации врачей специалистов"/>
+					<code code="RESCONS" codeSystem="1.2.643.5.1.13.13.99.2.197" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_medicaldocuments_sections_version}}" codeSystemName="Секции электронных медицинских документов" displayName="Результаты консультации/осмотра врача"/>
 					<title>Консультация врача специалиста</title>
 					<text>
 						<table>
@@ -619,7 +612,7 @@
                     {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'id_speciality', label: 'Специальность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
                     {name: 'id_position', label: 'Должность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
-					{name: 'passport_code', label: 'Код подразделения, выдавшего паспорт (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+					//{name: 'passport_code', label: 'Код подразделения, выдавшего паспорт (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
                     {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
                     //{name: 'inn', label: 'ИНН [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'remd_adress_code', label: 'Субъект федерации [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true,"readonly":true}', position: '0.14'},
