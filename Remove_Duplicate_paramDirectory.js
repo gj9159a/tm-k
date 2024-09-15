@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.1.0
+// @version      1.1.1
 // @description  определяет кол-во дубликатов справочников и позволяет их удалить, оставляя при этом самую НОВУЮ версию.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -149,13 +149,14 @@
                 duplicateList.id = 'duplicateList';
                 duplicateList.style.position = 'absolute';
                 duplicateList.style.top = '50%';
-                duplicateList.style.left = '70%';
+                duplicateList.style.left = '75%';
                 duplicateList.style.transform = 'translate(-50%, -50%)';
                 duplicateList.style.backgroundColor = 'white';
                 duplicateList.style.border = '1px solid black';
                 duplicateList.style.padding = '10px';
                 duplicateList.style.zIndex = '1000';
                 duplicateList.style.maxHeight = '500px';
+                duplicateList.style.maxWidth = '500px';
                 duplicateList.style.overflowY = 'auto';
 
                 for (let key in duplicates) {
