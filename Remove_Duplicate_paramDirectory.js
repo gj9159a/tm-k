@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Remove_Duplicate_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.1.0
 // @description  определяет кол-во дубликатов справочников и позволяет их удалить, оставляя при этом самую НОВУЮ версию.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -17,14 +17,22 @@
 
     setTimeout(function() {
         let button = document.createElement('button');
-        button.textContent = 'Удалить дубликаты справочников';
+        button.textContent = 'Удалить все дубликаты справочников, оставив новейшие';
         button.style.position = 'absolute';
         button.style.right = '10%';
+        button.style.top = '5%';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(button);
+
+        let viewButton = document.createElement('button');
+        viewButton.textContent = 'Посмотреть и удалить дубликаты справочников вручную';
+        viewButton.style.position = 'absolute';
+        viewButton.style.right = '10%';
+        viewButton.style.top = '9%';
+        document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(viewButton);
 
         let duplicateCountLabel = document.createElement('span');
         duplicateCountLabel.style.position = 'absolute';
-        duplicateCountLabel.style.right = '27%';
+        duplicateCountLabel.style.right = '10%';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(duplicateCountLabel);
 
         let observer = new MutationObserver(updateDuplicateCount);
@@ -37,15 +45,15 @@
             let duplicates = {};
 
             elements.forEach(el => {
-                let name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
-                let model = el.querySelector(".p-admin-table_cell:nth-child(3)").textContent;
-                let account = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
+                let name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent.trim();
+                let model = el.querySelector(".p-admin-table_cell:nth-child(3)").textContent.trim();
+                let account = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent.trim();
                 let key = `${name}-${model}-${account}`;
 
                 if (!duplicates[key]) {
                     duplicates[key] = [];
                 }
-                duplicates[key].push(el);
+                duplicates[key].push({ element: el });
             });
 
             let duplicateCount = 0;
@@ -114,6 +122,88 @@
                 button.style.backgroundColor = '';
                 button.style.color = '';
             }, 5000);
+        });
+
+        viewButton.addEventListener('click', (event) => {
+            event.preventDefault();
+
+            let duplicateList = document.getElementById('duplicateList');
+
+            if (viewButton.textContent === 'Посмотреть и удалить дубликаты справочников вручную') {
+                let elements = Array.from(document.querySelectorAll(".p-admin-table_row.BModelSearchListElement"));
+                let duplicates = {};
+
+                elements.forEach(el => {
+                    let name = el.querySelector(".p-admin-table_cell:nth-child(2)").textContent;
+                    let model = el.querySelector(".p-admin-table_cell:nth-child(3)").textContent;
+                    let account = el.querySelector(".p-admin-table_cell:nth-child(4)").textContent;
+                    let key = `${name}-${model}-${account}`;
+
+                    if (!duplicates[key]) {
+                        duplicates[key] = [];
+                    }
+                    duplicates[key].push(el);
+                });
+
+                duplicateList = document.createElement('div');
+                duplicateList.id = 'duplicateList';
+                duplicateList.style.position = 'absolute';
+                duplicateList.style.top = '50%';
+                duplicateList.style.left = '70%';
+                duplicateList.style.transform = 'translate(-50%, -50%)';
+                duplicateList.style.backgroundColor = 'white';
+                duplicateList.style.border = '1px solid black';
+                duplicateList.style.padding = '10px';
+                duplicateList.style.zIndex = '1000';
+                duplicateList.style.maxHeight = '500px';
+                duplicateList.style.overflowY = 'auto';
+
+                for (let key in duplicates) {
+                    if (duplicates[key].length > 1) {
+                        let title = document.createElement('h3');
+                        title.textContent = `Дубликаты для ключа: ${key}`;
+                        duplicateList.appendChild(title);
+
+                        let maxIdElement = duplicates[key].reduce((maxEl, currentEl) => {
+                            return parseInt(currentEl.dataset.id) > parseInt(maxEl.dataset.id) ? currentEl : maxEl;
+                        });
+
+                        duplicates[key].forEach((el) => {
+                            let item = document.createElement('div');
+                            item.textContent = `ID: ${el.dataset.id}, Название: ${el.querySelector(".p-admin-table_cell:nth-child(2)").textContent}`;
+
+                            if (el === maxIdElement) {
+                                item.style.color = 'green';
+                            } else {
+                                item.style.color = 'red';
+                            }
+
+                            let deleteButton = document.createElement('button');
+                            deleteButton.textContent = '✖';
+                            deleteButton.style.marginLeft = '10px';
+                            deleteButton.addEventListener('click', async () => {
+                                await itemProcessing([{ id: el.dataset.id }]);
+                                item.remove();
+                            });
+
+                            item.appendChild(deleteButton);
+                            duplicateList.appendChild(item);
+                        });
+                    }
+                }
+
+                document.body.appendChild(duplicateList);
+
+                viewButton.textContent = 'Закрыть просмотр дубликатов справочников';
+                viewButton.style.backgroundColor = 'lightcoral';
+            } else {
+                if (duplicateList) {
+                    document.body.removeChild(duplicateList);
+                }
+
+                viewButton.textContent = 'Посмотреть и удалить дубликаты справочников вручную';
+                viewButton.style.backgroundColor = '';
+            }
         });
 
         async function itemProcessing(items) {
