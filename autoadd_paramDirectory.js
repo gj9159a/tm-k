@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         autoadd_paramDirectory
 // @namespace    http://tampermonkey.net/
-// @version      1.0.2
+// @version      1.0.3
 // @description  Автоматизированное добавление и заполнение справочников
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/paramdirectory
@@ -20,12 +20,12 @@
         button.textContent = 'Добавить и заполнить справочники';
         button.style.position = 'absolute';
         button.style.right = '10%';
-        button.style.top = '6%';
+        button.style.top = '13%';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(button);
 
         let container = document.createElement('div');
         container.style.position = 'absolute';
-        container.style.top = '6%';
+        container.style.top = '17%';
         container.style.right = '27%';
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
@@ -65,7 +65,7 @@
         addButton.textContent = 'Добавить справочники';
         addButton.style.position = 'absolute';
         addButton.style.right = '10%';
-        addButton.style.top = '10%';
+        addButton.style.top = '17%';
         addButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(addButton);
 
@@ -73,7 +73,7 @@
         fillButton.textContent = 'Заполнить справочники';
         fillButton.style.position = 'absolute';
         fillButton.style.right = '10%';
-        fillButton.style.top = '14%';
+        fillButton.style.top = '21%';
         fillButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(fillButton);
 
@@ -81,7 +81,7 @@
         goAddButton.textContent = 'Поехали добавлять справочники!';
         goAddButton.style.position = 'absolute';
         goAddButton.style.right = '10%';
-        goAddButton.style.top = '10%';
+        goAddButton.style.top = '17%';
         goAddButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(goAddButton);
 
@@ -89,7 +89,7 @@
         goFillButton.textContent = 'Поехали заполнять справочники!';
         goFillButton.style.position = 'absolute';
         goFillButton.style.right = '10%';
-        goFillButton.style.top = '10%';
+        goFillButton.style.top = '17%';
         goFillButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(goFillButton);
 
@@ -97,7 +97,7 @@
         stopButton.textContent = 'На сегодня хватит';
         stopButton.style.position = 'absolute';
         stopButton.style.right = '10%';
-        stopButton.style.top = '6%';
+        stopButton.style.top = '13%';
         stopButton.style.display = 'none';
         document.querySelector("#ParamDirectory > div.element-cr._label-left._inline").appendChild(stopButton);
 
@@ -128,7 +128,7 @@
             fillButton.style.display = 'none';
             delimiterInput.style.display = 'inline-block';
             nameInput.style.display = 'inline-block';
-            goAddButton.style.top = '10%';
+            goAddButton.style.top = '17%';
             goAddButton.style.display = 'inline-block';
             stopButton.style.display = 'inline-block';
         });
@@ -139,7 +139,7 @@
             addButton.style.display = 'none';
             nameInput.style.display = 'inline-block';
             valueInput.style.display = 'inline-block';
-            goFillButton.style.top = '10%';
+            goFillButton.style.top = '17%';
             goFillButton.style.display = 'inline-block';
             stopButton.style.display = 'inline-block';
         });
