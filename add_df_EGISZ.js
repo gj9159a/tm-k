@@ -617,7 +617,7 @@
                     //{name: 'inn', label: 'ИНН [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'remd_adress_code', label: 'Субъект федерации [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true}', position: '0.14'},
                     {name: 'doc_number_nu', label: 'Номер договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.15","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"number"}}', position: '0.15'},
-                    {name: 'date_doc_nu', label: 'Дата договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.16","elementOrder":1,"customModelDefaultValue":{"model":"Clients","value":"last_appointment_date_human_readable_dmy"}}', position: '0.16'},
+                    {name: 'date_doc_nu', label: 'Дата договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.16","elementOrder":1}', position: '0.16'},
                     {name: 'date_doc_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.17","elementOrder":1}', position: '0.17'},
                     {name: 'date_doc_finish_nu', label: 'Дата окончания договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.18","elementOrder":1}', position: '0.18'},
                     {name: 'date_doc_finish_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.19","elementOrder":1}', position: '0.19'}
