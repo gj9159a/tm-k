@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.12
+// @version      1.2.13
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -653,7 +653,7 @@
 
                 for (let scenario of scenarios) {
                     let fieldsTemplate = [
-                        {name: 'egisz_fields', label: 'Поля ЕГИСЗ', model: 'DynamicObjects', scenarios: scenario, type: 'collapsible', config: '{"position":"0.1","elementOrder":1,"items":["status_egisz","last_status_egisz","send_egisz","id_visit_purpose","case_visit_type","admission_condition","id_case_result","doctor_comment","id_payment_type","remd_execution_place","remd_service_event_type","id_document_type","remd_document_title","start_datetime","finish_datetime","remdLifeAnamnesis","remdAnamnesis","remdObjectiveStatus","remdConclusion","word9","remd_payment_type","remd_payment_doc_type","signature","signature_info"]}', position: '0.1'},
+                        {name: 'egisz_fields', label: 'Поля ЕГИСЗ', model: 'DynamicObjects', scenarios: scenario, type: 'collapsible', config: '{"position":"0.1","elementOrder":1,"items":["status_egisz","last_status_egisz","send_egisz","id_visit_purpose","case_visit_type","admission_condition","id_case_result","doctor_comment","id_payment_type","remd_execution_place","remd_service_event_type","id_document_type","remd_document_title","start_datetime","finish_datetime","remdLifeAnamnesis","remdAnamnesis","remdObjectiveStatus","remdConclusion","word","remd_payment_type","remd_payment_doc_type","signature","signature_info"]}', position: '0.1'},
                         {name: 'case_egisz', label: 'Тип осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.11","elementOrder":1,"defaultValue":"CaseAmb"}', position: '0.11'},
                         {name: 'status_egisz', label: 'Статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
                         {name: 'last_status_egisz', label: 'Последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
