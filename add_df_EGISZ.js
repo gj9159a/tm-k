@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.3.5
+// @version      1.3.6
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -748,7 +748,7 @@
 						{name: 'doctor_comment', label: 'Комментарий врача', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.18","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","doctor_comment"]}', position: '0.18'},
 						{name: 'remdAnamnesis', label: 'Анамнез заболевания', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.19","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdAnamnesis"]}', position: '0.19'},
 						{name: 'remdLifeAnamnesis', label: 'Анамнез жизни', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.20","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdLifeAnamnesis"]}', position: '0.20'},
-						{name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.21'}
+						{name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.21'},
 						{name: 'remdConclusion', label: 'Заключение', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.22","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdConclusion"]}', position: '0.22'},
 						{name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.23","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', config2: `{"_autoCompleteAttributes":{"${scenario}":{"word":{"arg_fields":"self","template":"application.modules.clientix.views.clients.acMkb10","model":"Words","scenario":"wordSuggestMkb10","preload":false,"firstItems":true,"type":"plain","filterByInput":true,"limit":20,"enableNextPageLoad":true,"enabledCustomScroll":true,"delay":700}}},"paramDirectoryOptions":[],"setRules":[["word","safe"]]}`, position: '0.23'},
 						{name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.24","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.24'},
