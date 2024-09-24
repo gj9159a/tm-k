@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.3.2
+// @version      1.3.3
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -581,76 +581,77 @@
         }
 
         // функция, которая проверяет поля по названиям и атрибутам egisz_name в конфиге1, чтобы избежать дублей и ловушки джокера
-		async function removeFieldsWithEgiszName(scenario) {
-		    // Фильтрация полей по сценарию и наличию egisz_name в конфиге
-		    let fieldsToRemoveByScenario = $W.viewDynamicFields.allListItems.filter(field => 
-		        field.scenario === scenario && field.config.egisz_name
-		    );
+        async function removeFieldsWithEgiszName(scenario) {
+            // Фильтрация полей по сценарию и наличию egisz_name в конфиге
+            let fieldsToRemoveByScenario = $W.viewDynamicFields.allListItems.filter(field =>
+                field.scenario === scenario && field.config.egisz_name
+            );
 
-		    // Массив объектов с name и model для проверки
-		    const fieldsToCheck = [
-		        { name: "egisz_id", model: "Clients" },
-		        { name: "status_egisz", model: "Clients" },
-		        { name: "family_name", model: "Users" },
-		        { name: "given_name", model: "Users" },
-		        { name: "middle_name", model: "Users" },
-		        { name: "snils", model: "Users" },
-		        { name: "id_speciality", model: "Users" },
-		        { name: "id_position", model: "Users" },
-		        { name: "snils", model: "Clients" },
-		        { name: "remd_adress_code", model: "Clients" },
-		        { name: "doc_number_nu", model: "Clients" },
-		        { name: "date_doc_nu", model: "Clients" },
-		        { name: "date_doc_nu_YYYYMMDD", model: "Clients" },
-		        { name: "date_doc_finish_nu", model: "Clients" },
-		        { name: "date_doc_finish_nu_YYYYMMDD", model: "Clients" }
-		    ];
+            // Массив объектов с name и model для проверки
+            const fieldsToCheck = [
+                { name: "egisz_id", model: "Clients" },
+                { name: "status_egisz", model: "Clients" },
+                { name: "family_name", model: "Users" },
+                { name: "given_name", model: "Users" },
+                { name: "middle_name", model: "Users" },
+                { name: "snils", model: "Users" },
+                { name: "id_speciality", model: "Users" },
+                { name: "id_position", model: "Users" },
+                { name: "snils", model: "Clients" },
+                { name: "inn", model: "Clients" },
+                { name: "remd_adress_code", model: "Clients" },
+                { name: "doc_number_nu", model: "Clients" },
+                { name: "date_doc_nu", model: "Clients" },
+                { name: "date_doc_nu_YYYYMMDD", model: "Clients" },
+                { name: "date_doc_finish_nu", model: "Clients" },
+                { name: "date_doc_finish_nu_YYYYMMDD", model: "Clients" }
+            ];
 
-		    // Фильтрация всех полей по name и model
-		    let fieldsToRemoveByNameAndModel = $W.viewDynamicFields.allListItems.filter(field => 
-		        fieldsToCheck.some(check => check.name === field.name && check.model === field.model)
-		    );
+            // Фильтрация всех полей по name и model
+            let fieldsToRemoveByNameAndModel = $W.viewDynamicFields.allListItems.filter(field =>
+                fieldsToCheck.some(check => check.name === field.name && check.model === field.model)
+            );
 
-		    // Объединение всех полей для удаления
-		    let fieldsToRemove = [...fieldsToRemoveByScenario, ...fieldsToRemoveByNameAndModel];
+            // Объединение всех полей для удаления
+            let fieldsToRemove = [...fieldsToRemoveByScenario, ...fieldsToRemoveByNameAndModel];
 
-		    // Удаление дубликатов
-		    fieldsToRemove = fieldsToRemove.filter((field, index, self) =>
-		        index === self.findIndex((f) => (
-		            f.row_id === field.row_id && f.field_number === field.field_number
-		        ))
-		    );
+            // Удаление дубликатов
+            fieldsToRemove = fieldsToRemove.filter((field, index, self) =>
+                index === self.findIndex((f) => (
+                    f.row_id === field.row_id && f.field_number === field.field_number
+                ))
+            );
 
-		    for (let field of fieldsToRemove) {
-		        let data = {
-		            wid: 'deleteDynamicField',
-		            mode: 'submit',
-		            data: {
-		                row_id: field.row_id,
-		                field_number: field.field_number,
-		                field_name: field.name
-		            }
-		        };
+            for (let field of fieldsToRemove) {
+                let data = {
+                    wid: 'deleteDynamicField',
+                    mode: 'submit',
+                    data: {
+                        row_id: field.row_id,
+                        field_number: field.field_number,
+                        field_name: field.name
+                    }
+                };
 
-		        try {
-		            let response = await fetch('https://klientiks.ru/clientix/admin/dynamicfields', {
-		                method: 'POST',
-		                headers: {
-		                    'accept': '*/*',
-		                    'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-		                    'x-requested-with': 'XMLHttpRequest'
-		                },
-		                body: 'data=' + encodeURIComponent(JSON.stringify([data])),
-		                credentials: 'include'
-		            });
+                try {
+                    let response = await fetch('https://klientiks.ru/clientix/admin/dynamicfields', {
+                        method: 'POST',
+                        headers: {
+                            'accept': '*/*',
+                            'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                            'x-requested-with': 'XMLHttpRequest'
+                        },
+                        body: 'data=' + encodeURIComponent(JSON.stringify([data])),
+                        credentials: 'include'
+                    });
 
-		            let result = await response.json();
-		            console.table(result);
-		        } catch (error) {
-		            console.info('Error:', error);
-		        }
-		    }
-		}
+                    let result = await response.json();
+                    console.table(result);
+                } catch (error) {
+                    console.info('Error:', error);
+                }
+            }
+        }
 
         createButton.addEventListener('click', async function(event) {
             event.preventDefault();
@@ -670,19 +671,22 @@
                     createButton.style.color = '';
                 }, 5000);
             } else if (createButton.textContent === 'Поехали!' && scenarioInput.style.display === 'block') {
-		        let userResponse = confirm('Вы нажали кнопку "фильтровать", чтобы увидеть все поля перед использованием скрипта? Это позволит избежать ошибки из-за атрибута egisz_name в других полях.');
-		        if (!userResponse) {
-		            return;
-		        }
-		        
-		        createButton.textContent = 'Добавляю поля...';
-		        createButton.style.backgroundColor = 'yellow';
+                let userResponse = confirm('Вы нажали кнопку "фильтровать", чтобы видеть все поля перед запуском создания динполей скриптом? Это позволит избежать ошибки из-за атрибута egisz_name в других полях.');
+                if (!userResponse) {
+                    return;
+                }
 
-		        let scenarios = scenarioInput.value.split('\n');
+                createButton.textContent = 'Добавляю поля...';
+                createButton.style.backgroundColor = 'yellow';
 
+                let scenarios = scenarioInput.value.split('\n');
+
+                // Выполнение функции removeFieldsWithEgiszName для каждого сценария
                 for (let scenario of scenarios) {
-            		await removeFieldsWithEgiszName(scenario);
+                    await removeFieldsWithEgiszName(scenario);
+                }
 
+                // Создание полей, которые должны создаваться один раз
                 let fields = [
                     {name: 'egisz_id', label: 'Номер клиента [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.09","elementOrder":1,}', position: '0.09'},
                     {name: 'status_egisz', label: 'История статусов [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
@@ -702,38 +706,6 @@
                     {name: 'date_doc_finish_nu', label: 'Дата окончания договора [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'calendar', config: '{"position":"0.18","elementOrder":1}', position: '0.18'},
                     {name: 'date_doc_finish_nu_YYYYMMDD', label: '', model: 'Clients', scenarios: 'add,edit', type: 'hidden', config: '{"position":"0.19","elementOrder":1}', position: '0.19'}
                 ];
-
-                let fieldsTemplate = [
-                    {name: 'egisz_fields', label: 'Поля ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'collapsible', config: '{"position":"0.1","elementOrder":1,"items":["status_egisz","last_status_egisz","send_egisz","id_visit_purpose","case_visit_type","admission_condition","id_case_result","doctor_comment","id_payment_type","remd_execution_place","remd_service_event_type","id_document_type","remd_document_title","start_datetime","finish_datetime","remdLifeAnamnesis","remdAnamnesis","remdObjectiveStatus","remdConclusion","word","remd_payment_type","remd_payment_doc_type","signature","signature_info"]}', position: '0.1'},
-                    {name: 'case_egisz', label: 'Тип осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.11","elementOrder":1,"defaultValue":"CaseAmb"}', position: '0.11'},
-                    {name: 'status_egisz', label: 'Статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
-                    {name: 'last_status_egisz', label: 'Последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
-                    {name: 'send_egisz', label: 'Чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.14","elementOrder":1,"elementClass":"_block"}', position: '0.14'},
-                    {name: 'id_case_result', label: 'Результат осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.15","elementOrder":1,"defaultValue":"Без изменения","readonly":true}', position: '0.15'},
-                    {name: 'id_visit_purpose', label: 'Цель визита', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.16","elementOrder":1,"defaultValue":"лечебно-диагностическая","readonly":true}', position: '0.16'},
-                    {name: 'case_visit_type', label: 'Первичность', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.17","elementOrder":1,"defaultValue":"Первичный","readonly":true}', position: '0.17'},
-                    {name: 'admission_condition', label: 'Состояние пациента', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.18","elementOrder":1,"defaultValue":"Удовлетворительное","readonly":true}', position: '0.18'},
-                    {name: 'id_payment_type', label: 'Способ оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.19","elementOrder":1,"defaultValue":"платные услуги","readonly":true}', position: '0.19'},
-                    // {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', position: '0.297'},
-                    {name: 'doctor_comment', label: 'Комментарий врача', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","doctor_comment"]}', position: '0.21'},
-                    {name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.22","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.22'},
-                    {name: 'remd_payment_type', label: 'Источник оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.23","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Средства пациента","readonly":true}', position: '0.23'},
-                    {name: 'remd_payment_doc_type', label: 'Документ-основание оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.24","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Договор на оказание платных медицинских услуг","readonly":true}', position: '0.24'},
-                    {name: 'id_document_type', label: 'Тип мед. документа', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.25","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Протокол консультации (CDA) Редакция 4","readonly":true}', position: '0.25'},
-                    {name: 'start_datetime', label: 'Время начала осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.26","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.26'},
-                    {name: 'finish_datetime', label: 'Время окончания осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.27","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.27'},
-                    {name: 'start_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.28","elementOrder":1}', position: '0.28'},
-                    {name: 'finish_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.29","elementOrder":1}', position: '0.29'},
-                    {name: 'signature', label: 'Подпись ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'signature', config: '{"position":"0.9","elementOrder":1}', position: '0.9'},
-                    {name: 'signature_info', label: 'Информация о подписи', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.91","elementOrder":1}', position: '0.91'},
-                    {name: 'remd_document_title', label: 'Заголовок документа РЭМД', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.291","elementOrder":1,"defaultValue":"Протокол консультации врача"}', position: '0.291'},
-                    {name: 'remd_execution_place', label: 'Место оказания услуги', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.292","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Иные медицинские организации","readonly":true}', position: '0.292'},
-                    {name: 'remdAnamnesis', label: 'Анамнез заболевания', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.293","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdAnamnesis"]}', position: '0.293'},
-                    {name: 'remdLifeAnamnesis', label: 'Анамнез жизни', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.294","elementOrder":1,,"defaultValue":"-""egisz_name":["DynamicObjects","remdLifeAnamnesis"]}', position: '0.294'},
-                    {name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.295","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.295'},
-                    {name: 'remdConclusion', label: 'Заключение', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.296","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdConclusion"]}', position: '0.296'},
-                    {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', config2: `{"_autoCompleteAttributes":{"${scenario}":{"word":{"arg_fields":"self","template":"application.modules.clientix.views.clients.acMkb10","model":"Words","scenario":"wordSuggestMkb10","preload":false,"firstItems":true,"type":"plain","filterByInput":true,"limit":20,"enableNextPageLoad":true,"enabledCustomScroll":true,"delay":700}}},"paramDirectoryOptions":[],"setRules":[["word","safe"]]}`, position: '0.297'}
-                ];                
 
                 for (let field of fields) {
                     let data = {
@@ -763,7 +735,38 @@
                     }
                 }
 
-                for (let scenario of scenarios) {                    
+                for (let scenario of scenarios) {
+                    let fieldsTemplate = [
+                        {name: 'egisz_fields', label: 'Поля ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'collapsible', config: '{"position":"0.1","elementOrder":1,"items":["status_egisz","last_status_egisz","send_egisz","id_visit_purpose","case_visit_type","admission_condition","id_case_result","doctor_comment","id_payment_type","remd_execution_place","remd_service_event_type","id_document_type","remd_document_title","start_datetime","finish_datetime","remdLifeAnamnesis","remdAnamnesis","remdObjectiveStatus","remdConclusion","word","remd_payment_type","remd_payment_doc_type","signature","signature_info"]}', position: '0.1'},
+                        {name: 'case_egisz', label: 'Тип осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.11","elementOrder":1,"defaultValue":"CaseAmb"}', position: '0.11'},
+                        {name: 'status_egisz', label: 'Статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
+                        {name: 'last_status_egisz', label: 'Последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
+                        {name: 'send_egisz', label: 'Чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.14","elementOrder":1,"elementClass":"_block"}', position: '0.14'},
+                        {name: 'id_case_result', label: 'Результат осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.15","elementOrder":1,"defaultValue":"Без изменения","readonly":true}', position: '0.15'},
+                        {name: 'id_visit_purpose', label: 'Цель визита', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.16","elementOrder":1,"defaultValue":"лечебно-диагностическая","readonly":true}', position: '0.16'},
+                        {name: 'case_visit_type', label: 'Первичность', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.17","elementOrder":1,"defaultValue":"Первичный","readonly":true}', position: '0.17'},
+                        {name: 'admission_condition', label: 'Состояние пациента', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.18","elementOrder":1,"defaultValue":"Удовлетворительное","readonly":true}', position: '0.18'},
+                        {name: 'id_payment_type', label: 'Способ оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.19","elementOrder":1,"defaultValue":"платные услуги","readonly":true}', position: '0.19'},
+                        // {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', position: '0.297'},
+                        {name: 'doctor_comment', label: 'Комментарий врача', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","doctor_comment"]}', position: '0.21'},
+                        {name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.22","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.22'},
+                        {name: 'remd_payment_type', label: 'Источник оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.23","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Средства пациента","readonly":true}', position: '0.23'},
+                        {name: 'remd_payment_doc_type', label: 'Документ-основание оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.24","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Договор на оказание платных медицинских услуг","readonly":true}', position: '0.24'},
+                        {name: 'id_document_type', label: 'Тип мед. документа', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.25","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Протокол консультации (CDA) Редакция 4","readonly":true}', position: '0.25'},
+                        {name: 'start_datetime', label: 'Время начала осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.26","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.26'},
+                        {name: 'finish_datetime', label: 'Время окончания осмотра', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.27","elementOrder":1,"customModelDefaultValue":{"datetime":true,"format":"d.m.Y H:i"}}', position: '0.27'},
+                        {name: 'start_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.28","elementOrder":1}', position: '0.28'},
+                        {name: 'finish_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.29","elementOrder":1}', position: '0.29'},
+                        {name: 'signature', label: 'Подпись ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'signature', config: '{"position":"0.9","elementOrder":1}', position: '0.9'},
+                        {name: 'signature_info', label: 'Информация о подписи', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.91","elementOrder":1}', position: '0.91'},
+                        {name: 'remd_document_title', label: 'Заголовок документа РЭМД', model: 'DynamicObjects', scenarios: 'scenario', type: 'text', config: '{"position":"0.291","elementOrder":1,"defaultValue":"Протокол консультации врача"}', position: '0.291'},
+                        {name: 'remd_execution_place', label: 'Место оказания услуги', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.292","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Иные медицинские организации","readonly":true}', position: '0.292'},
+                        {name: 'remdAnamnesis', label: 'Анамнез заболевания', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.293","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdAnamnesis"]}', position: '0.293'},
+                        {name: 'remdLifeAnamnesis', label: 'Анамнез жизни', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.294","elementOrder":1,,"defaultValue":"-""egisz_name":["DynamicObjects","remdLifeAnamnesis"]}', position: '0.294'},
+                        {name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.295","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.295'},
+                        {name: 'remdConclusion', label: 'Заключение', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.296","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdConclusion"]}', position: '0.296'},
+                        {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', config2: `{"_autoCompleteAttributes":{"${scenario}":{"word":{"arg_fields":"self","template":"application.modules.clientix.views.clients.acMkb10","model":"Words","scenario":"wordSuggestMkb10","preload":false,"firstItems":true,"type":"plain","filterByInput":true,"limit":20,"enableNextPageLoad":true,"enabledCustomScroll":true,"delay":700}}},"paramDirectoryOptions":[],"setRules":[["word","safe"]]}`, position: '0.297'}
+                    ];
 
                     let fields = fieldsTemplate.map((field) => {
                         return {...field, scenarios: scenario};
@@ -796,7 +799,7 @@
                             console.info('Error:', error);
                         }
                     }
-                }}
+                }
 
                 createButton.textContent = 'Поля ЕГИСЗ добавлены!';
                 createButton.style.backgroundColor = 'green';
