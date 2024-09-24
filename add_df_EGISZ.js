@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.3.1
+// @version      1.3.2
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -581,9 +581,44 @@
         }
 
         // функция, которая проверяет поля по названиям и атрибутам egisz_name в конфиге1, чтобы избежать дублей и ловушки джокера
-        async function removeFieldsWithEgiszName(scenario) {
-		    let fieldsToRemove = $W.viewDynamicFields.allListItems.filter(field => 
+		async function removeFieldsWithEgiszName(scenario) {
+		    // Фильтрация полей по сценарию и наличию egisz_name в конфиге
+		    let fieldsToRemoveByScenario = $W.viewDynamicFields.allListItems.filter(field => 
 		        field.scenario === scenario && field.config.egisz_name
+		    );
+
+		    // Массив объектов с name и model для проверки
+		    const fieldsToCheck = [
+		        { name: "egisz_id", model: "Clients" },
+		        { name: "status_egisz", model: "Clients" },
+		        { name: "family_name", model: "Users" },
+		        { name: "given_name", model: "Users" },
+		        { name: "middle_name", model: "Users" },
+		        { name: "snils", model: "Users" },
+		        { name: "id_speciality", model: "Users" },
+		        { name: "id_position", model: "Users" },
+		        { name: "snils", model: "Clients" },
+		        { name: "remd_adress_code", model: "Clients" },
+		        { name: "doc_number_nu", model: "Clients" },
+		        { name: "date_doc_nu", model: "Clients" },
+		        { name: "date_doc_nu_YYYYMMDD", model: "Clients" },
+		        { name: "date_doc_finish_nu", model: "Clients" },
+		        { name: "date_doc_finish_nu_YYYYMMDD", model: "Clients" }
+		    ];
+
+		    // Фильтрация всех полей по name и model
+		    let fieldsToRemoveByNameAndModel = $W.viewDynamicFields.allListItems.filter(field => 
+		        fieldsToCheck.some(check => check.name === field.name && check.model === field.model)
+		    );
+
+		    // Объединение всех полей для удаления
+		    let fieldsToRemove = [...fieldsToRemoveByScenario, ...fieldsToRemoveByNameAndModel];
+
+		    // Удаление дубликатов
+		    fieldsToRemove = fieldsToRemove.filter((field, index, self) =>
+		        index === self.findIndex((f) => (
+		            f.row_id === field.row_id && f.field_number === field.field_number
+		        ))
 		    );
 
 		    for (let field of fieldsToRemove) {
@@ -635,7 +670,7 @@
                     createButton.style.color = '';
                 }, 5000);
             } else if (createButton.textContent === 'Поехали!' && scenarioInput.style.display === 'block') {
-		        let userResponse = confirm('Вы нажали кнопку "фильтровать", чтобы увидеть все поля перед использованием скрипта? Это позволит избежать ошибки из-за атрибута egisz_name в других полях');
+		        let userResponse = confirm('Вы нажали кнопку "фильтровать", чтобы увидеть все поля перед использованием скрипта? Это позволит избежать ошибки из-за атрибута egisz_name в других полях.');
 		        if (!userResponse) {
 		            return;
 		        }
