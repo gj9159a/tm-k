@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.2.14
+// @version      1.2.15
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -520,7 +520,7 @@
 												<content>Диагноз</content>
 											</td>
 											<td>
-												<content>{{egis_prep_data.modifiedDynCardData.remdDiagnosis}}</content>
+												<content>{{dynamic_object.word}}</content>
 											</td>
 										</tr>
 									</tbody>
@@ -529,7 +529,7 @@
 							<entry>
 								<observation classCode="OBS" moodCode="EVN">
 									<code code="806" codeSystem="1.2.643.5.1.13.13.99.2.166" codeSystemVersion="{{egis_prep_data.modifiedDynCardData.remd_cda_encodedfields_version}}" codeSystemName="Кодируемые поля CDA документов" displayName="Заключение консультации"/>
-									<value xsi:type="ST">{{egis_prep_data.modifiedDynCardData.remdDiagnosis}}</value>
+									<value xsi:type="ST">{{dynamic_object.word}}</value>
 								</observation>
 							</entry>
 						</section>
@@ -612,7 +612,7 @@
                     {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'id_speciality', label: 'Специальность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.14","elementOrder":1,"readonly":true}', position: '0.14'},
                     {name: 'id_position', label: 'Должность [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'ac', config: '{"position":"0.15","elementOrder":1,"readonly":true}', position: '0.15'},
-					// {name: 'passport_code', label: 'Код подразделения, выдавшего паспорт (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
+                    // {name: 'passport_code', label: 'Код подразделения, выдавшего паспорт (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
                     {name: 'snils', label: 'СНИЛС (только цифры) [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.12","elementOrder":1}', position: '0.12'},
                     // {name: 'inn', label: 'ИНН [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'text', config: '{"position":"0.13","elementOrder":1}', position: '0.13'},
                     {name: 'remd_adress_code', label: 'Субъект федерации [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'ac', config: '{"position":"0.14","elementOrder":1,"paramDirectorySaveDisabled":true}', position: '0.14'},
@@ -663,7 +663,7 @@
                         {name: 'case_visit_type', label: 'Первичность', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.17","elementOrder":1,"defaultValue":"Первичный","readonly":true}', position: '0.17'},
                         {name: 'admission_condition', label: 'Состояние пациента', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.18","elementOrder":1,"defaultValue":"Удовлетворительное","readonly":true}', position: '0.18'},
                         {name: 'id_payment_type', label: 'Способ оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.19","elementOrder":1,"defaultValue":"платные услуги","readonly":true}', position: '0.19'},
-                        {name: 'word9', label: 'Диагноз ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.2","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"readonly":true}', position: '0.2'},
+                        // {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', position: '0.297'},
                         {name: 'doctor_comment', label: 'Комментарий врача', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.21","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","doctor_comment"]}', position: '0.21'},
                         {name: 'remd_service_event_type', label: 'Тип документированного события', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.22","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Консультация","readonly":true}', position: '0.22'},
                         {name: 'remd_payment_type', label: 'Источник оплаты', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.23","elementOrder":1,"paramDirectorySaveDisabled":true,"defaultValue":"Средства пациента","readonly":true}', position: '0.23'},
@@ -681,7 +681,7 @@
                         {name: 'remdLifeAnamnesis', label: 'Анамнез жизни', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.294","elementOrder":1,,"defaultValue":"-""egisz_name":["DynamicObjects","remdLifeAnamnesis"]}', position: '0.294'},
                         {name: 'remdObjectiveStatus', label: 'Объективный статус', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.295","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdObjectiveStatus"]}', position: '0.295'},
                         {name: 'remdConclusion', label: 'Заключение', model: 'DynamicObjects', scenarios: 'scenario', type: 'textarea', config: '{"position":"0.296","elementOrder":1,"defaultValue":"-","egisz_name":["DynamicObjects","remdConclusion"]}', position: '0.296'},
-                        {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","remdDiagnosis"],"additionalACValue":[{"key_index":"dictionary_param1","value":"dictionary_param1","element":"word9"}],"paramDirectorySaveDisabled":true}', position: '0.297'}
+                        {name: 'word', label: 'Диагноз', model: 'DynamicObjects', scenarios: 'scenario', type: 'ac', config: '{"position":"0.297","elementOrder":1,"egisz_name":["DynamicObjects","MkbCode"],"paramDirectorySaveDisabled":true}', position: '0.297'}
                     ];
 
                     let fields = fieldsTemplate.map((field) => {
