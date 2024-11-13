@@ -762,7 +762,9 @@
 						{name: 'last_status_egisz', label: 'Последний статус отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.32","elementOrder":1}', position: '0.32'},
 						{name: 'send_egisz', label: 'Чекбокс отправки данных', model: 'DynamicObjects', scenarios: 'scenario', type: 'checkbox', config: '{"position":"0.33","elementOrder":1,"elementClass":"_block"}', position: '0.33'},
 						{name: 'signature', label: 'Подпись ЕГИСЗ', model: 'DynamicObjects', scenarios: 'scenario', type: 'signature', config: '{"position":"0.34","elementOrder":1}', position: '0.34'},
-						{name: 'signature_info', label: 'Информация о подписи', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.35","elementOrder":1}', position: '0.35'}
+						{name: 'signature_info', label: 'Информация о подписи', model: 'DynamicObjects', scenarios: 'scenario', type: 'textoutput', config: '{"position":"0.35","elementOrder":1}', position: '0.35'},
+			    			{name: 'start_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.36","elementOrder":1}', position: '0.36'},
+			    			{name: 'finish_datetime_YYYYMMDDHHIIGMT', label: '', model: 'DynamicObjects', scenarios: 'scenario', type: 'hidden', config: '{"position":"0.37","elementOrder":1}', position: '0.37'}
                     ];
 
                     let fields = fieldsTemplate.map((field) => {
