@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         update_accountSettings
 // @namespace    http://tampermonkey.net/
-// @version      1.2.1
+// @version      1.2.2
 // @description  улучшение админпанели настроек
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountsettings
@@ -659,10 +659,10 @@
 	"COMPONENT_MDLP": "честный знак ЧЗ",
 	"COMPONENT_MDLP_AUTH_DATA": "честный знак ЧЗ",
 	"COMPONENT_EGISZ": "ЕГИСЗ",
-	"COMPONENT_FSS": "",
-	"COMPONENT_EGISZ_AUTH_DATA": "ЕГИСЗ",
+	"COMPONENT_FSS": "ФСС",
+	"COMPONENT_EGISZ_AUTH_DATA": "ЕГИСЗ {"host":"http://b2b.n3health.ru/","GUID":"ГУИД","idLPU":"АЙДИ_ЛПУ"}",
 	"COMPONENT_YANDEX_MAPS_ONLINE_WIDGET": "",
-	"COMPONENT_FSS_AUTH_DATA": "",
+	"COMPONENT_FSS_AUTH_DATA": "ФСС",
 	"COMPONENT_OSMI_CARDS": "включет поддержку OSMI карт (ссылка)",
 	"COMPONENT_OSMI_CARDS_HOST": "адрес API хоста OSMI Cards (ссылка)",
 	"COMPONENT_OSMI_CARDS_LOGIN": "данные  API ID. Эти данные предоставляются Вам OSMI Cards. (ссылка)",
