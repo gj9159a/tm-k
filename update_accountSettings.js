@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         update_accountSettings
 // @namespace    http://tampermonkey.net/
-// @version      1.2.3
+// @version      1.2.4
 // @description  улучшение админпанели настроек
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountsettings
@@ -1348,6 +1348,7 @@
 	"COMPONENT_ENABLE_DYNAMIC_OBJECTS_NUMERATION": "автоматическая нумерация протоколов осмотра",
 	"COMPONENT_INDEX_CLIENTS_BY_APPOINTMENTS_ONLY": "фильтры клиента по визитам учитывают только визиты, не продажи. И в расширенном поиске, и в поиске по записям. после включения надо переиндексировать всех клиентов в акке",
 	"COMPONENT_REPORTS_ASYNC_LIMIT": "количество строк отчета для создания в фоне",
+	"ACCOUNTS_ROLES_NAMES": "{\"custom_role_1\":\"Кладовщик\",\"custom_role_2\":\"Бухгалтер\"}",
     };
 
     function addDescriptions(descriptions) {
