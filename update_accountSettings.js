@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         update_accountSettings
 // @namespace    http://tampermonkey.net/
-// @version      1.2.5
+// @version      1.2.6
 // @description  улучшение админпанели настроек
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountsettings
@@ -1349,6 +1349,7 @@
 	"COMPONENT_INDEX_CLIENTS_BY_APPOINTMENTS_ONLY": "фильтры клиента по визитам учитывают только визиты, не продажи. И в расширенном поиске, и в поиске по записям. после включения надо переиндексировать всех клиентов в акке",
 	"COMPONENT_REPORTS_ASYNC_LIMIT": "количество строк отчета для создания в фоне",
 	"Названия ролей для сотрудников": "{\"custom_role_1\":\"Кладовщик\",\"custom_role_2\":\"Бухгалтер\"}",
+	"Страница по умолчанию после логина сотрудника с указанной ролью": "{\"custom_role_1\":\"/clientix/schedule/default\",\"custom_role_2\":\"/clientix/calendar/default\"} admin - владелец, полный доступ. receptionist - расширенный доступ. user - доступ сотрудника",
     };
 
     function addDescriptions(descriptions) {
