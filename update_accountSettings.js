@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         update_accountSettings
 // @namespace    http://tampermonkey.net/
-// @version      1.2.6
+// @version      1.2.7
 // @description  улучшение админпанели настроек
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/accountsettings
@@ -1401,7 +1401,7 @@
                         button.style.backgroundColor = originalColor;
                         button.style.color = originalTextColor;
                         button.textContent = originalText;
-                    }, 5000);
+                    }, 2000);
                 });
             }
         }
