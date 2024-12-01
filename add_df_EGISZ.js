@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_EGISZ
 // @namespace    http://tampermonkey.net/
-// @version      1.3.7
+// @version      1.3.8
 // @description  добавляет динполя ЕГИСЗ в указанные протоколы, в карточку клиента и сотрудника. Также позволяет добавить документ "Протокол консультации (CDA) Редакция 4".
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -688,7 +688,7 @@
 
                 // Создание полей, которые должны создаваться один раз
                 let fields = [
-                    {name: 'egisz_id', label: 'Номер клиента [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.09","elementOrder":1,}', position: '0.09'},
+                    {name: 'egisz_id', label: 'Номер клиента [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.09","elementOrder":1}', position: '0.09'},
                     {name: 'status_egisz', label: 'История статусов [ЕГИСЗ]', model: 'Clients', scenarios: 'add,edit', type: 'textoutput', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
                     {name: 'family_name', label: 'Фамилия [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.1","elementOrder":1}', position: '0.1'},
                     {name: 'given_name', label: 'Имя [ЕГИСЗ]', model: 'Users', scenarios: 'edit,editEmployee,editOwner', type: 'text', config: '{"position":"0.11","elementOrder":1}', position: '0.11'},
