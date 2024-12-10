@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_FNS
 // @namespace    http://tampermonkey.net/
-// @version      1.0.0
+// @version      1.0.1
 // @description  добавляет необходимые поля для справки ФНС в карточку клиента.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -69,7 +69,7 @@
 
         async function addFNSFields() {
             const fields = [
-                { name: 'fns_collapsible', label: 'Если плательщик и пациент РАЗНЫЕ лица', model: 'Clients', scenarios: 'edit', type: 'collapsible', config: '{"position":"500","elementOrder":1,"items":["fns_payer_f","fns_payer_i","fns_payer_o","fns_payer_birthdate","fns_payer_inn","fns_payer_passport_serial","fns_payer_passport_number","fns_payer_passport_date"]}', position: '500' },
+                { name: 'fns_collapsible', label: '[НОВАЯ Справка ФНС] Если плательщик и пациент РАЗНЫЕ лица', model: 'Clients', scenarios: 'edit', type: 'collapsible', config: '{"position":"500","elementOrder":1,"items":["fns_payer_f","fns_payer_i","fns_payer_o","fns_payer_birthdate","fns_payer_inn","fns_payer_passport_serial","fns_payer_passport_number","fns_payer_passport_date"]}', position: '500' },
                 { name: 'fns_payer_f', label: 'Фамилия плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"501","elementOrder":1}', position: '501' },
                 { name: 'fns_payer_i', label: 'Имя плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"502","elementOrder":1}', position: '502' },
                 { name: 'fns_payer_o', label: 'Отчество плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"503","elementOrder":1}', position: '503' },
