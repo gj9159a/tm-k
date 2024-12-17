@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         add_df_FNS
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.0.2
 // @description  добавляет необходимые поля для справки ФНС в карточку клиента.
 // @author       gj9159a
 // @match        https://klientiks.ru/clientix/admin/dynamicfields
@@ -73,11 +73,11 @@
                 { name: 'fns_payer_f', label: 'Фамилия плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"501","elementOrder":1}', position: '501' },
                 { name: 'fns_payer_i', label: 'Имя плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"502","elementOrder":1}', position: '502' },
                 { name: 'fns_payer_o', label: 'Отчество плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"503","elementOrder":1}', position: '503' },
-                { name: 'fns_payer_birthdate', label: 'Дата рождения плательщика', model: 'Clients', scenarios: 'edit', type: 'calendar', config: '{"position":"504","elementOrder":1}', position: '504' },
+                { name: 'fns_payer_birthdate', label: 'Дата рождения плательщика', model: 'Clients', scenarios: 'edit', type: 'calendar', config: '{"position":"504","elementOrder":1,"getValueWithMask":"true","mask":"dd.mm.yyyy"}', position: '504' },
                 { name: 'fns_payer_inn', label: 'ИНН плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"505","elementOrder":1}', position: '505' },
                 { name: 'fns_payer_passport_serial', label: 'Серия паспорта плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"506","elementOrder":1}', position: '506' },
                 { name: 'fns_payer_passport_number', label: 'Номер паспорта плательщика', model: 'Clients', scenarios: 'edit', type: 'text', config: '{"position":"507","elementOrder":1}', position: '507' },
-                { name: 'fns_payer_passport_date', label: 'Дата выдачи паспорта плательщика', model: 'Clients', scenarios: 'edit', type: 'calendar', config: '{"position":"508","elementOrder":1}', position: '508' }
+                { name: 'fns_payer_passport_date', label: 'Дата выдачи паспорта плательщика', model: 'Clients', scenarios: 'edit', type: 'calendar', config: '{"position":"508","elementOrder":1,"getValueWithMask":"true","mask":"dd.mm.yyyy"}', position: '508' }
             ];
 
             for (const field of fields) {
